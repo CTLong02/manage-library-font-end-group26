@@ -3,14 +3,16 @@ import { Link } from 'react-router-dom';
 import styles from './SignIn.module.scss';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 function SignIn() {
+    const navigative = useNavigate();
+    const isLogin = useSelector((state) => state.app.isLogin);
     const [validated, setValidated] = useState(false);
     const [formData, setFormData] = useState({
         username: undefined,
         password: undefined,
         terms: true,
     });
-    const navigative = useNavigate();
     const [show, setShow] = useState(false);
     const handle = (e) => {
         const { name, value } = e.target;
