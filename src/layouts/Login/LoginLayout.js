@@ -44,7 +44,15 @@ function LoginLayout({ children }) {
                         className="align-items-center h-100 justify-content-around py-4"
                         style={{ minHeight: 'calc(100vh - 84px)' }}
                     >
-                        <Col xs={10} md={6} lg={5}></Col>
+                        <Col xs={10} md={6} lg={5}>
+                            <div className="text-white">
+                                <h1 className="fs-1 fw-bold">Thư viện số tiện ích</h1>
+                                <p className="fs-5 fw-semibold">
+                                    Giúp trải nghiệm việc tra cứu và quản lý thư viện theo một cách mới. Tiện lợi và dễ
+                                    dàng
+                                </p>
+                            </div>
+                        </Col>
                         <Col xs={10} md={6} lg={5}>
                             {children}
                         </Col>
