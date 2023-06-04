@@ -18,5 +18,9 @@ const BookApi = {
         const url = 'book/update-book';
         return axiosClient.put(url, params);
     },
+    deleteBook: (params) => {
+        const url = 'book/delete-book';
+        return axiosClient.delete(url, params);
+    },
 };
 export default BookApi;

@@ -26,11 +26,11 @@ function LoginLayout({ children }) {
                                     <div className="me-3" onClick={() => navigate('/')} role="button">
                                         <span className="fw-semibold fs-5">Trang chủ</span>
                                     </div>
-                                    <div className="me-3" onClick={() => navigate('/search')} role="button">
+                                    {/* <div className="me-3" onClick={() => navigate('/search')} role="button">
                                         <span className="fw-semibold fs-5">Tra cứu</span>
-                                    </div>
-                                    <div className="me-3" onClick={() => navigate('/contact')} role="button">
-                                        <span className="fw-semibold fs-5">Liên hệ</span>
+                                    </div> */}
+                                    <div className="me-3" onClick={() => navigate('/questions&contact')} role="button">
+                                        <span className="fw-semibold fs-5">Câu hỏi & Liên hệ</span>
                                     </div>
                                 </div>
                             </Nav>
