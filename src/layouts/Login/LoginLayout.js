@@ -14,7 +14,7 @@ function LoginLayout({ children }) {
             >
                 <Container fluid="lg">
                     <div>
-                        <Navbar.Brand href="#">
+                        <Navbar.Brand href="/">
                             <img src={hust} className="img-fluid" style={{ height: '48px' }}></img>
                         </Navbar.Brand>
                     </div>

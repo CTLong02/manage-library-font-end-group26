@@ -4,10 +4,22 @@ import LoginLayout from '~/layouts/Login/LoginLayout';
 import SignIn from '~/pages/SignIn/SignIn';
 import SignUp from '~/pages/SignUp/SignUp';
 import Forgot from '~/pages/Forgot/Forgot';
+import Search from '~/pages/search/Search';
+import QuestionAndContact from '~/pages/contactAndQuestions/ContactAndQuestion';
 const publicRoutes = [
     {
         path: '/',
         component: Home,
+        layout: HomeLayout,
+    },
+    {
+        path: '/search',
+        component: Search,
+        layout: HomeLayout,
+    },
+    {
+        path: '/contact',
+        component: QuestionAndContact,
         layout: HomeLayout,
     },
     {

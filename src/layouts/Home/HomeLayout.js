@@ -7,10 +7,10 @@ function HomeLayout({ children }) {
     const navigate = useNavigate();
     return (
         <div>
-            <Navbar expand="lg" className="shadow-lg" style={{ height: '84px' }}>
+            <Navbar expand="lg" className="shadow-lg fixed-top bg-white" style={{ height: '84px' }}>
                 <Container fluid="xl">
                     <div>
-                        <Navbar.Brand href="#">
+                        <Navbar.Brand href="/">
                             <img src={hust} className="img-fluid" style={{ height: '48px' }}></img>
                         </Navbar.Brand>
                     </div>
