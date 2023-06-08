@@ -6,6 +6,8 @@ import SignUp from '~/pages/SignUp/SignUp';
 import Forgot from '~/pages/Forgot/Forgot';
 import Search from '~/pages/search/Search';
 import QuestionAndContact from '~/pages/contactAndQuestions/ContactAndQuestion';
+import DashBoard from '~/pages/dashboard/Dashboard';
+import LayoutDashboard from '~/layouts/dashboard/LayoutDashboard';
 const publicRoutes = [
     {
         path: '/',
@@ -28,16 +30,22 @@ const publicRoutes = [
         layout: LoginLayout,
     },
     {
-        path: 'signUp',
+        path: '/signUp',
         component: SignUp,
         layout: LoginLayout,
     },
     {
-        path: 'forgot',
+        path: '/forgot',
         component: Forgot,
         layout: LoginLayout,
     },
 ];
-const privateRoutes = [];
+const privateRoutes = [
+    {
+        path: '/dashboard',
+        component: DashBoard,
+        layout: LayoutDashboard,
+    },
+];
 
 export { publicRoutes, privateRoutes };
