@@ -1,4 +1,13 @@
 @media (max-width: 991.5px) {
+    .nav {
+        border: none !important;
+        .navToggle {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    }
     .navCollapse {
         position: absolute;
         width: 240px;
@@ -24,5 +33,9 @@
     }
     .btns {
         margin-top: 10px;
+    }
+    .user {
+        position: absolute;
+        right: 50px;
     }
 }
