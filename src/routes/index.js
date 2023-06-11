@@ -8,6 +8,7 @@ import Search from '~/pages/search/Search';
 import QuestionAndContact from '~/pages/contactAndQuestions/ContactAndQuestion';
 import DashBoard from '~/pages/dashboard/Dashboard';
 import LayoutDashboard from '~/layouts/dashboard/LayoutDashboard';
+import Manage from '~/pages/manage/Manage';
 const publicRoutes = [
     {
         path: '/',
@@ -44,6 +45,11 @@ const privateRoutes = [
     {
         path: '/dashboard',
         component: DashBoard,
+        layout: LayoutDashboard,
+    },
+    {
+        path: '/manage',
+        component: Manage,
         layout: LayoutDashboard,
     },
 ];

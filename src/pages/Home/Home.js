@@ -22,7 +22,9 @@ function Home() {
                     </div>
                 </Fade>
                 <div className="col-md-6 col-12 d-flex justify-content-center align-items-end">
-                    <img src={imgBanner}></img>
+                    <Fade left>
+                        <img src={imgBanner}></img>
+                    </Fade>
                 </div>
             </div>
             <Footer></Footer>

@@ -1,3 +1,27 @@
+.active {
+    color: #e13853;
+}
+.menu {
+    width: 200px;
+    .item {
+        padding: 8px 12px;
+        border-bottom: 1px solid #ccc;
+        font-size: 1rem;
+        font-weight: 500;
+        color: #4a5677;
+        &:hover {
+            background-color: transparent;
+        }
+    }
+}
+.btnSignOut {
+    width: 100%;
+    border: 1px solid #dbe3ef;
+    background-color: #f2f3f7;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #4a5677;
+}
 @media (max-width: 991.5px) {
     .nav {
         border: none !important;

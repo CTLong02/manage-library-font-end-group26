@@ -3,10 +3,13 @@ import { Link } from 'react-router-dom';
 import styles from './SignIn.module.scss';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import AuthApi from '~/api/AuthApi';
+import { signIn } from '~/store/appSlice';
 function SignIn() {
     const navigative = useNavigate();
     const isLogin = useSelector((state) => state.app.isLogin);
+    const dispatch = useDispatch();
     const [validated, setValidated] = useState(false);
     const [formData, setFormData] = useState({
         username: undefined,
@@ -24,7 +27,17 @@ function SignIn() {
     const handleSavePassword = () => {
         setFormData({ ...formData, terms: !formData.terms });
     };
-    const handleSubmit = async (event) => {};
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const response = await AuthApi.signIn({
+            username: formData.username,
+            password: formData.password,
+        });
+        if (response) {
+            dispatch(signIn(response.access_token));
+            navigative('/dashboard');
+        }
+    };
     return (
         <div className={styles.signIn}>
             <header className={styles.headerForm}>
