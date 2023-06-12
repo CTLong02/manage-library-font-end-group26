@@ -1,10 +1,11 @@
 import { Nav, Container, Navbar } from 'react-bootstrap';
 import clsx from 'clsx';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import hust from '~/assets/images/hust.png';
 import styles from './HomeLayout.module.scss';
 function HomeLayout({ children }) {
     const navigate = useNavigate();
+    const location = useLocation();
     return (
         <div>
             <Navbar expand="lg" className="shadow-lg fixed-top bg-white" style={{ height: '84px' }}>
@@ -20,17 +21,32 @@ function HomeLayout({ children }) {
                             <Nav className="me-auto my-2 my-lg-0">
                                 <div className={clsx(styles.navContainer, 'me-5 d-flex align-items-center')}>
                                     <div className="py-2 me-3" onClick={() => navigate('/')}>
-                                        <span className=" fw-semibold fs-5" role="button">
+                                        <span
+                                            className={clsx(' fw-semibold fs-5', {
+                                                [styles.active]: location.pathname === '/',
+                                            })}
+                                            role="button"
+                                        >
                                             Trang chủ
                                         </span>
                                     </div>
                                     <div className="py-2 me-3" onClick={() => navigate('/search')}>
-                                        <span className="fw-semibold fs-5" role="button">
+                                        <span
+                                            className={clsx(' fw-semibold fs-5', {
+                                                [styles.active]: location.pathname === '/search',
+                                            })}
+                                            role="button"
+                                        >
                                             Tra cứu
                                         </span>
                                     </div>
                                     <div className="py-2 me-3" onClick={() => navigate('/contact')}>
-                                        <span className="fw-semibold fs-5" role="button">
+                                        <span
+                                            className={clsx(' fw-semibold fs-5', {
+                                                [styles.active]: location.pathname === '/contact',
+                                            })}
+                                            role="button"
+                                        >
                                             Liên hệ
                                         </span>
                                     </div>

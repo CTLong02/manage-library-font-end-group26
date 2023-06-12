@@ -1,12 +1,18 @@
 import { Nav, Container, Navbar, Dropdown } from 'react-bootstrap';
 import clsx from 'clsx';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { signOut } from '~/store/appSlice';
 import hust from '~/assets/images/hust.png';
-import { useLocation } from 'react-router-dom';
 import styles from './LayoutDashboard.module.scss';
 function LayoutDashboard({ children }) {
     const navigate = useNavigate();
     const location = useLocation();
+    const dispatch = useDispatch();
+    const handleSignOut = () => {
+        dispatch(signOut());
+        navigate('/');
+    };
     return (
         <div>
             <Navbar expand="lg" className="shadow-lg fixed-top bg-white" style={{ height: '84px' }}>
@@ -55,7 +61,10 @@ function LayoutDashboard({ children }) {
                                     <Dropdown.Item className={styles.item}>Chu Thiện Long</Dropdown.Item>
                                     <Dropdown.Item className={styles.item}>IT01-K65</Dropdown.Item>
                                     <Dropdown.Item className={clsx(styles.item, 'border-0')}>
-                                        <button className={clsx(styles.btnSignOut, 'rounded-3 px-3 py-1 ')}>
+                                        <button
+                                            className={clsx(styles.btnSignOut, 'rounded-3 px-3 py-1 ')}
+                                            onClick={handleSignOut}
+                                        >
                                             <i className="fa-regular fa-right-from-bracket me-2"></i>
                                             Đăng xuất
                                         </button>

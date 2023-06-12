@@ -2,7 +2,7 @@ function Footer() {
     return (
         <footer style={{ background: 'rgb(46, 98, 233)' }}>
             <div className="container-xl py-3">
-                <div className="d-flex justify-content-between align-items-center">
+                <div className="d-flex justify-content-between align-items-center flex-wrap">
                     <div>
                         <p style={{ fontSize: '1rem', fontWeight: 500, lineHeight: '1.5rem', color: '#fff' }}>
                             Mọi vấn đề thắc mắc xin vui lòng liên hệ thư viện theo{' '}

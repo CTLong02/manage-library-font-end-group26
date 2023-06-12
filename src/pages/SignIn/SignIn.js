@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import AuthApi from '~/api/AuthApi';
 import { signIn } from '~/store/appSlice';
+import toasts from '~/app/components/Toast';
 function SignIn() {
     const navigative = useNavigate();
     const isLogin = useSelector((state) => state.app.isLogin);
@@ -34,6 +35,7 @@ function SignIn() {
             password: formData.password,
         });
         if (response) {
+            toasts.showSuccess('Đăng nhập thành công');
             dispatch(signIn(response.access_token));
             navigative('/dashboard');
         }

@@ -22,5 +22,5 @@ export const appSlice = createSlice({
     },
 });
 
-export const { signIn } = appSlice.actions;
+export const { signIn, signOut } = appSlice.actions;
 export default appSlice.reducer;

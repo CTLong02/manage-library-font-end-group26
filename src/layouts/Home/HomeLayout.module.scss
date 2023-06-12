@@ -8,6 +8,9 @@
     background: #e13853;
     border: 1px solid #e13853;
 }
+.active {
+    color: #e13853 !important;
+}
 @media (max-width: 991.5px) {
     .navCollapse {
         position: absolute;

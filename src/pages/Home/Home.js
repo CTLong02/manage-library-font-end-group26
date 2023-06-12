@@ -6,7 +6,7 @@ import imgBanner from '~/assets/images/img_banner.png';
 function Home() {
     return (
         <div className={styles.banner}>
-            <div className="container-xl d-flex align-items-center" style={{ minHeight: 600 }}>
+            <div className="container-xl d-flex align-items-center flex-wrap" style={{ minHeight: 600 }}>
                 <Fade right>
                     <div className="col-md-6 col-12">
                         <h3>Chào mừng các bạn đến với thư viện số</h3>
