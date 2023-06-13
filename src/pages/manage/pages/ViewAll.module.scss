@@ -1,0 +1,6 @@
+.inputSearch {
+    &:focus-visible {
+        // background: none !important;
+        outline-width: 0;
+    }
+}

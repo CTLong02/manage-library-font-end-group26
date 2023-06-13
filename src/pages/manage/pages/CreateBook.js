@@ -1,6 +1,7 @@
 import styles from './CreateBooj.module.scss';
 import AccountApi from '~/api/AccountApi';
 import { Button, Form } from 'react-bootstrap';
+import toasts from '~/app/components/Toast';
 import clsx from 'clsx';
 import { useState } from 'react';
 function CreateBook() {
@@ -43,7 +44,9 @@ function CreateBook() {
         formData.append('book', form.book);
         formData.append('image', form.image);
         const res = await AccountApi.createBook(formData);
-        console.log(res);
+        if (res) {
+            toasts.showSuccess('Đã thêm sách thành công');
+        }
     };
     return (
         <div className="d-flex justify-content-center align-content-center py-5">
