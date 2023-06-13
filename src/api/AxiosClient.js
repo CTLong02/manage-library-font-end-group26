@@ -38,5 +38,10 @@ const updateAccessToken = (accessToken) => {
     axiosClient.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 };
 
+(() => {
+    if (localStorage.getItem('access_token')) {
+        updateAccessToken(localStorage.getItem('access_token'));
+    }
+})();
 export { updateAccessToken };
 export default axiosClient;
