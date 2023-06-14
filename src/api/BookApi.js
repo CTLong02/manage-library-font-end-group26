@@ -1,6 +1,6 @@
 import axiosClient from './AxiosClient';
 
-const AccountApi = {
+const BookApi = {
     createBook: (params) => {
         const url = 'book/create-book';
         return axiosClient({
@@ -10,5 +10,9 @@ const AccountApi = {
             data: params,
         });
     },
+    getBooks: () => {
+        const url = 'book/list-book';
+        return axiosClient.get(url);
+    },
 };
-export default AccountApi;
+export default BookApi;
