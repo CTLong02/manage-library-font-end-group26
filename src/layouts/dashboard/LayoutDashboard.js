@@ -41,7 +41,7 @@ function LayoutDashboard({ children }) {
                                         <div className="py-2 me-3" onClick={() => navigate('/manage')}>
                                             <span
                                                 className={clsx('fw-semibold fs-5', {
-                                                    [styles.active]: location.pathname === '/manage',
+                                                    [styles.active]: location.pathname.includes('/manage'),
                                                 })}
                                                 role="button"
                                             >

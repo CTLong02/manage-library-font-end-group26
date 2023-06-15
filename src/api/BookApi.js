@@ -14,5 +14,9 @@ const BookApi = {
         const url = 'book/list-book';
         return axiosClient.get(url);
     },
+    updateBook: (params) => {
+        const url = 'book/update-book';
+        return axiosClient.put(url, params);
+    },
 };
 export default BookApi;
