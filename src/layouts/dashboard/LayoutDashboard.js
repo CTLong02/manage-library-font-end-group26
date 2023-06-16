@@ -5,7 +5,10 @@ import { useDispatch } from 'react-redux';
 import { signOut } from '~/store/appSlice';
 import hust from '~/assets/images/hust.png';
 import styles from './LayoutDashboard.module.scss';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 function LayoutDashboard({ children }) {
+    const account = useSelector((state) => state.app.account);
     const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useDispatch();
@@ -13,6 +16,7 @@ function LayoutDashboard({ children }) {
         dispatch(signOut());
         navigate('/');
     };
+    useEffect(() => {}, [account]);
     return (
         <div>
             <Navbar expand="lg" className="shadow-lg fixed-top bg-white" style={{ height: '84px' }}>
@@ -68,8 +72,22 @@ function LayoutDashboard({ children }) {
                                     <i className="fa-regular fa-user text-secondary fs-3"></i>
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu align={'end'} className={clsx(styles.menu, 'border-0 shadow-lg')}>
-                                    <Dropdown.Item className={styles.item}>Chu Thiện Long</Dropdown.Item>
-                                    <Dropdown.Item className={styles.item}>IT01-K65</Dropdown.Item>
+                                    <Dropdown.Item className={styles.item}>
+                                        <i className="fs-4 me-2 fa-light fa-envelope"></i>
+                                        {account?.email}
+                                    </Dropdown.Item>
+                                    <Dropdown.Item className={styles.item}>
+                                        <i className="fs-4 me-2 fa-light fa-address-card"></i>
+                                        {account?.name}
+                                    </Dropdown.Item>
+                                    <Dropdown.Item className={styles.item}>
+                                        <i className="fs-4 me-2 fa-light fa-house"></i>
+                                        {account?.class}
+                                    </Dropdown.Item>
+                                    <Dropdown.Item className={styles.item}>
+                                        <i className="fs-4 me-2 fa-regular fa-school"></i>
+                                        {account?.faculty}
+                                    </Dropdown.Item>
                                     <Dropdown.Item className={clsx(styles.item, 'border-0')}>
                                         <button
                                             className={clsx(styles.btnSignOut, 'rounded-3 px-3 py-1 ')}
