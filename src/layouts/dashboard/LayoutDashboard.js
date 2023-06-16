@@ -38,14 +38,24 @@ function LayoutDashboard({ children }) {
                                                 Tổng quan
                                             </span>
                                         </div>
-                                        <div className="py-2 me-3" onClick={() => navigate('/manage')}>
+                                        <div className="py-2 me-3" onClick={() => navigate('/manageBook')}>
                                             <span
                                                 className={clsx('fw-semibold fs-5', {
-                                                    [styles.active]: location.pathname.includes('/manage'),
+                                                    [styles.active]: location.pathname.includes('/manageBook'),
                                                 })}
                                                 role="button"
                                             >
                                                 Quản lý sách
+                                            </span>
+                                        </div>
+                                        <div className="py-2 me-3" onClick={() => navigate('/manageAccount')}>
+                                            <span
+                                                className={clsx('fw-semibold fs-5', {
+                                                    [styles.active]: location.pathname.includes('/manageAccount'),
+                                                })}
+                                                role="button"
+                                            >
+                                                Quản lý tài khoản
                                             </span>
                                         </div>
                                     </div>

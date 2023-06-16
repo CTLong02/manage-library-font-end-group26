@@ -5,8 +5,9 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import AuthApi from '~/api/AuthApi';
-import { signIn } from '~/store/appSlice';
+import { signIn, setAccount } from '~/store/appSlice';
 import toasts from '~/app/components/Toast';
+import UserApi from '~/api/UserApi';
 function SignIn() {
     const navigative = useNavigate();
     const isLogin = useSelector((state) => state.app.isLogin);
@@ -35,8 +36,10 @@ function SignIn() {
             password: formData.password,
         });
         if (response) {
-            toasts.showSuccess('Đăng nhập thành công');
             dispatch(signIn(response.access_token));
+            const resInfor = await UserApi.getInforUser();
+            dispatch(setAccount(resInfor.data));
+            toasts.showSuccess(`Xin chào ${resInfor.data.name}`);
             navigative('/dashboard');
         }
     };

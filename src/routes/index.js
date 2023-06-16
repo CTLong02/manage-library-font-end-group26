@@ -8,7 +8,8 @@ import Search from '~/pages/search/Search';
 import QuestionAndContact from '~/pages/contactAndQuestions/ContactAndQuestion';
 import DashBoard from '~/pages/dashboard/Dashboard';
 import LayoutDashboard from '~/layouts/dashboard/LayoutDashboard';
-import ManageRouter from '~/pages/manage';
+import ManageRouter from '~/pages/managebook';
+import ManageAccountRouter from '~/pages/manageAccount';
 const publicRoutes = [
     {
         path: '/',
@@ -48,8 +49,13 @@ const privateRoutes = [
         layout: LayoutDashboard,
     },
     {
-        path: '/manage/*',
+        path: '/manageBook/*',
         component: ManageRouter,
+        layout: LayoutDashboard,
+    },
+    {
+        path: '/manageAccount/*',
+        component: ManageAccountRouter,
         layout: LayoutDashboard,
     },
 ];

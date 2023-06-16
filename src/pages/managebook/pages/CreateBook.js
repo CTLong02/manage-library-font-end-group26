@@ -36,7 +36,7 @@ function CreateBook() {
             // [name]: event.target.files,
         });
     };
-    console.log('form----', form);
+    // console.log('form----', form);
     const handleSubmit = async (event) => {
         const formAdd = event.currentTarget;
         event.preventDefault();

@@ -19,8 +19,11 @@ export const appSlice = createSlice({
             state.isLogin = false;
             localStorage.removeItem('access_token');
         },
+        setAccount: (state, action) => {
+            state.account = action.payload;
+        },
     },
 });
 
-export const { signIn, signOut } = appSlice.actions;
+export const { signIn, signOut, setAccount } = appSlice.actions;
 export default appSlice.reducer;
