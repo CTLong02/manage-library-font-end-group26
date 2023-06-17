@@ -54,7 +54,7 @@ function CreateBook() {
             const res = await BookApi.createBook(formData);
             if (res) {
                 toasts.showSuccess('Đã thêm sách thành công');
-                navigative('/manage/viewAllBooks');
+                navigative('book/viewAllBooks');
             }
         }
         setValidated(true);

@@ -6,22 +6,28 @@ function ManageAccount() {
     const columnDefs = [
         {
             field: 'username',
+            headerNamen: 'Tên đăng nhập',
         },
         {
             field: 'name',
+            headerName: 'Họ tên',
         },
         {
             field: 'email',
+            headerName: 'Email',
         },
         {
             field: 'class',
+            headerName: 'Lớp học',
         },
         {
             field: 'faculty',
+            headerName: 'Khoa',
         },
         {
             field: 'bookBorrowed',
             cellDataType: 'number',
+            headerName: 'Số sách mượn',
         },
     ];
     const defaultColDef = useMemo(() => {
@@ -31,8 +37,8 @@ function ManageAccount() {
             filter: true,
             floatingFilter: true,
             sortable: true,
-            resizable: true,
-            editable: true,
+            // resizable: true,
+            // editable: true,
         };
     }, []);
     const dataTypeDefinitions = useMemo(() => {
@@ -56,7 +62,6 @@ function ManageAccount() {
         });
     }, []);
     const [colDefs, setColDefs] = useState([...columnDefs]);
-    console.log(listUser);
     return (
         <div className="container-xl py-5">
             <div className="h-100">

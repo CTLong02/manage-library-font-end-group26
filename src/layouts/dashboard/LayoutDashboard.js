@@ -7,6 +7,8 @@ import hust from '~/assets/images/hust.png';
 import styles from './LayoutDashboard.module.scss';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import UserApi from '~/api/UserApi';
+import { setAccount } from '~/store/appSlice';
 function LayoutDashboard({ children }) {
     const account = useSelector((state) => state.app.account);
     const navigate = useNavigate();
@@ -16,7 +18,13 @@ function LayoutDashboard({ children }) {
         dispatch(signOut());
         navigate('/');
     };
-    useEffect(() => {}, [account]);
+    useEffect(() => {
+        if (account === undefined) {
+            UserApi.getInforUser().then((res) => {
+                dispatch(setAccount(res.data));
+            });
+        }
+    }, [account]);
     return (
         <div>
             <Navbar expand="lg" className="shadow-lg fixed-top bg-white" style={{ height: '84px' }}>
@@ -42,24 +50,24 @@ function LayoutDashboard({ children }) {
                                                 Tổng quan
                                             </span>
                                         </div>
-                                        <div className="py-2 me-3" onClick={() => navigate('/manageBook')}>
+                                        <div className="py-2 me-3" onClick={() => navigate('/book')}>
                                             <span
                                                 className={clsx('fw-semibold fs-5', {
-                                                    [styles.active]: location.pathname.includes('/manageBook'),
+                                                    [styles.active]: location.pathname.includes('/book'),
                                                 })}
                                                 role="button"
                                             >
-                                                Quản lý sách
+                                                Sách
                                             </span>
                                         </div>
-                                        <div className="py-2 me-3" onClick={() => navigate('/manageAccount')}>
+                                        <div className="py-2 me-3" onClick={() => navigate('/account')}>
                                             <span
                                                 className={clsx('fw-semibold fs-5', {
-                                                    [styles.active]: location.pathname.includes('/manageAccount'),
+                                                    [styles.active]: location.pathname.includes('/account'),
                                                 })}
                                                 role="button"
                                             >
-                                                Quản lý tài khoản
+                                                Tài khoản
                                             </span>
                                         </div>
                                     </div>

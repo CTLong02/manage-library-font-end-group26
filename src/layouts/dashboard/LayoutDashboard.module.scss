@@ -2,7 +2,7 @@
     color: #e13853;
 }
 .menu {
-    width: 200px;
+    min-width: 200px;
     .item {
         padding: 8px 12px;
         font-size: 1rem;
@@ -34,7 +34,7 @@
     .navCollapse {
         position: absolute;
         width: 240px;
-        top: 60px;
+        top: 48px;
         right: 0;
         padding: 8px 12px;
         background: #fff;
@@ -42,6 +42,7 @@
         border-radius: 6px;
     }
     .navContainer {
+        width: 100%;
         flex-direction: column !important;
         align-items: start !important;
         margin: 0 !important;

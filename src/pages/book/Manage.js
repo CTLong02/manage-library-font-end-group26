@@ -1,21 +1,27 @@
+import { useSelector } from 'react-redux';
 import styles from './Manage.module.scss';
 import Cards from './components/Cards';
 import { Row, Col } from 'react-bootstrap';
 import Footer from '~/app/components/Footer';
 function Manage() {
+    const account = useSelector((state) => state.app.account);
     return (
         <div className="bg-light min-vh-100">
             <div className="container-xl">
                 <Row>
-                    <Col xs={11} md={6} xl={4} className="my-4">
-                        <Cards
-                            img={<i className="text-white fs-1 fa-light fa-books-medical"></i>}
-                            title={'Tạo sách mới'}
-                            sub={'Tạo thêm sách mới gồm những thông tin tên sách, tên tác giả'}
-                            des={'Quản lý sách'}
-                            to={'createBook'}
-                        ></Cards>
-                    </Col>
+                    {account && account?.role === 'admin' ? (
+                        <Col xs={11} md={6} xl={4} className="my-4">
+                            <Cards
+                                img={<i className="text-white fs-1 fa-light fa-books-medical"></i>}
+                                title={'Tạo sách mới'}
+                                sub={'Tạo thêm sách mới gồm những thông tin tên sách, tên tác giả'}
+                                des={'Quản lý sách'}
+                                to={'createBook'}
+                            ></Cards>
+                        </Col>
+                    ) : (
+                        <></>
+                    )}
 
                     <Col xs={11} md={6} xl={4} className="my-4">
                         <Cards
@@ -29,10 +35,12 @@ function Manage() {
 
                     <Col xs={11} md={6} xl={4} className="my-4">
                         <Cards
-                            img={<i className="text-white fs-1 fa-light fa-magnifying-glass"></i>}
-                            title={'Tìm kiếm sách'}
-                            sub={'Tìm kiếm sách với từ khóa hoặc bộ lọc'}
-                            des={'Quản lý sách'}
+                            img={<i className="text-white fs-1 fa-solid fa-right-left"></i>}
+                            title={'Xem danh sách sách mượn'}
+                            sub={
+                                'Xem sách đã được mượn bởi sinh viên, những thông tin như ngày mượn, ngày hết hạn mượn'
+                            }
+                            des={'Quản lý việc mượn sách'}
                             to={'seekBook'}
                         ></Cards>
                     </Col>

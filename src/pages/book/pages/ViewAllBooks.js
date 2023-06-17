@@ -48,8 +48,8 @@ function ViewAllBooks() {
             filter: true,
             floatingFilter: true,
             sortable: true,
-            resizable: true,
-            editable: true,
+            // resizable: true,
+            // editable: true,
         };
     }, []);
     useEffect(() => {
