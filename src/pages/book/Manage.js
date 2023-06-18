@@ -35,13 +35,22 @@ function Manage() {
 
                     <Col xs={11} md={6} xl={4} className="my-4">
                         <Cards
-                            img={<i className="text-white fs-1 fa-solid fa-right-left"></i>}
+                            img={<i className="text-white fs-1 fa-sharp fa-solid fa-rectangle-history-circle-plus"></i>}
+                            title={'Thêm sách mượn'}
+                            sub={'Thêm sách được mượn , điền những thông tin như ngày mượn, ngày hết hạn, ...'}
+                            des={'Quản lý việc mượn sách'}
+                            to={'borrowing'}
+                        ></Cards>
+                    </Col>
+                    <Col xs={11} md={6} xl={4} className="my-4">
+                        <Cards
+                            img={<i className="text-white fs-1 fa-regular fa-list"></i>}
                             title={'Xem danh sách sách mượn'}
                             sub={
                                 'Xem sách đã được mượn bởi sinh viên, những thông tin như ngày mượn, ngày hết hạn mượn'
                             }
                             des={'Quản lý việc mượn sách'}
-                            to={'seekBook'}
+                            to={'borrow'}
                         ></Cards>
                     </Col>
                 </Row>

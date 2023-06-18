@@ -14,7 +14,122 @@ function DashBoard() {
         magazine: 0,
         scienceTopic: 0,
     });
+    const [booksByType, setBooksByType] = useState({
+        curriculum: 0,
+        gradutionThesis: 0,
+        referenceBook: 0,
+        magazine: 0,
+        scienceTopic: 0,
+    });
     const option1 = {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie',
+            style: {
+                'font-family': ' Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen',
+            },
+            height: 200,
+        },
+        title: {
+            text: null,
+        },
+        tooltip: {
+            pointFormat: '<b>{point.percentage:.1f}%</b>',
+        },
+        accessibility: {
+            point: {
+                valueSuffix: '%',
+            },
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: false,
+                },
+                showInLegend: true,
+            },
+        },
+        colors: ['#2C78BE', '#FA9124', '#2CBE89', '#E13853', '#ccc'],
+        legend: {
+            verticalAlign: 'middle',
+            layout: 'vertical',
+            align: 'right',
+            enabled: true,
+            useHTML: true,
+            itemMarginBottom: 8,
+            labelFormatter: function () {
+                return this.name + '<span>' + this.y + '</span>';
+            },
+            itemStyle: {
+                color: '#3f4254',
+                fontSize: '12px',
+            },
+            title: {
+                style: {
+                    'font-family': ' Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen',
+                },
+            },
+        },
+        series: [
+            {
+                color: '#fff',
+                colorByPoint: true,
+
+                data: [
+                    {
+                        name: 'Giáo trình',
+                        y: booksByType.curriculum,
+                        dataLabels: {
+                            enabled: true,
+                            distance: -20,
+                            format: '{point.percentage:.1f}%',
+                        },
+                    },
+                    {
+                        name: 'Đồ án tốt nghiệp',
+                        y: booksByType.gradutionThesis,
+                        dataLabels: {
+                            enabled: true,
+                            distance: -20,
+                            format: '{point.percentage:.1f}%',
+                        },
+                    },
+                    {
+                        name: 'Sách tham khảo',
+                        y: booksByType.referenceBook,
+                        dataLabels: {
+                            enabled: true,
+                            distance: -20,
+                            format: '{point.percentage:.1f}%',
+                        },
+                    },
+                    {
+                        name: 'Tạp chí',
+                        y: booksByType.magazine,
+                        dataLabels: {
+                            enabled: true,
+                            distance: -20,
+                            format: '{point.percentage:.1f}%',
+                        },
+                    },
+                    {
+                        name: 'Đề tài khoa học',
+                        y: booksByType.scienceTopic,
+                        dataLabels: {
+                            enabled: true,
+                            distance: -20,
+                            format: '{point.percentage:.1f}%',
+                        },
+                    },
+                ],
+            },
+        ],
+    };
+    const option2 = {
         chart: {
             plotBackgroundColor: null,
             plotBorderWidth: null,
@@ -124,6 +239,27 @@ function DashBoard() {
     };
     useEffect(() => {
         BookApi.getBooks().then((res) => {
+            setBooksByType({
+                curriculum: res.data.filter((book) => {
+                    return book.type.toLowerCase() === 'giáo trình';
+                }).length,
+                gradutionThesis: res.data.filter((book) => {
+                    return book.type.toLowerCase() === 'đồ án tốt nghiệp';
+                }).length,
+                referenceBook: res.data.filter((book) => {
+                    return book.type.toLowerCase() === 'sách tham khảo';
+                }).length,
+                magazine: res.data.filter((book) => {
+                    return book.type.toLowerCase() === 'tạp chí';
+                }).length,
+                scienceTopic: res.data.filter((book) => {
+                    return book.type.toLowerCase() === 'đề tài khoa học';
+                }).length,
+            });
+        });
+    }, []);
+    useEffect(() => {
+        BookApi.getBooks().then((res) => {
             setBooks({
                 curriculum: res.data
                     .filter((book) => {
@@ -167,14 +303,15 @@ function DashBoard() {
         <div className={styles.dashboard}>
             <div className="container-xl p-4">
                 <Row>
-                    <Col lg={4} className="mx-3 bg-white">
-                        <div>
+                    <Col lg={4}>
+                        <div className="mx-3 p-3 bg-white">
                             <p className="fs-3 fw-semibold">Thống kê loại sách</p>
+                            <PieChart highcharts={Highchart} options={option1}></PieChart>
                         </div>
-                        <div>
+                        <div className="mx-3 p-3 mt-3 bg-white">
                             <p className="fs-3 fw-semibold">Thống kê số sách theo loại sách</p>
                             <div>
-                                <PieChart highcharts={Highchart} options={option1}></PieChart>
+                                <PieChart highcharts={Highchart} options={option2}></PieChart>
                             </div>
                         </div>
                     </Col>
