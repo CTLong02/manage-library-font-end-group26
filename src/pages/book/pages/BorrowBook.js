@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { AgGridReact } from 'ag-grid-react';
 import BorrowingApi from '~/api/BorrowingApi';
-import { Col, Dropdown, Modal } from 'react-bootstrap';
+import { Col, Modal, Spinner } from 'react-bootstrap';
 import Delete from '../components/Delete';
 import imgTrash from '~/assets/images/trash.png';
 import toasts from '~/app/components/Toast';
@@ -12,6 +12,7 @@ function BorrowBook() {
     const [books, setBooks] = useState();
     const account = useSelector((state) => state.app.account);
     const [params, setParams] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
     const [isModal, setIsModal] = useState(false);
     const dataTypeDefinitions = useMemo(() => {
         return {
@@ -125,18 +126,22 @@ function BorrowBook() {
         ]);
     };
     useEffect(() => {
-        BorrowingApi.listBorrowing()
-            .then((res) =>
-                setBooks([
-                    ...res.data.map((book) => {
-                        return {
-                            ...book,
-                            option: 'Xóa',
-                        };
-                    }),
-                ]),
-            )
-            .catch((err) => console.log(err));
+        setTimeout(() => {
+            BorrowingApi.listBorrowing()
+                .then(
+                    (res) =>
+                        setBooks([
+                            ...res.data.map((book) => {
+                                return {
+                                    ...book,
+                                    option: 'Xóa',
+                                };
+                            }),
+                        ]),
+                    setIsLoading(false),
+                )
+                .catch((err) => console.log(err));
+        }, 250);
     }, []);
     useEffect(() => {
         if (account?.role === 'user') {
@@ -183,17 +188,23 @@ function BorrowBook() {
                     / <span>Mượn sách</span>
                 </p>
             </div>
-            <div className="h-100">
-                <div className="ag-theme-alpine" style={{ height: 500 }}>
-                    <AgGridReact
-                        rowData={books}
-                        defaultColDef={defaultColDef}
-                        columnDefs={colDefs}
-                        dataTypeDefinitions={dataTypeDefinitions}
-                        onCellContextMenu={handleContextMenu}
-                    ></AgGridReact>
+            {isLoading ? (
+                <div className="d-flex justify-content-center align-items-center bg-light" style={{ height: '500px' }}>
+                    <Spinner animation="border" variant="primary"></Spinner>
                 </div>
-            </div>
+            ) : (
+                <div className="h-100">
+                    <div className="ag-theme-alpine" style={{ height: 500 }}>
+                        <AgGridReact
+                            rowData={books}
+                            columnDefs={colDefs}
+                            defaultColDef={defaultColDef}
+                            dataTypeDefinitions={dataTypeDefinitions}
+                            onCellContextMenu={handleContextMenu}
+                        ></AgGridReact>
+                    </div>
+                </div>
+            )}
             <Modal show={isModal} animation centered>
                 <Modal.Header className="d-flex justify-content-center">
                     <Modal.Title>Xóa sách mượn</Modal.Title>
