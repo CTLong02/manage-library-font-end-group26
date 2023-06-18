@@ -6,7 +6,7 @@ import { signOut } from '~/store/appSlice';
 import hust from '~/assets/images/hust.png';
 import styles from './LayoutDashboard.module.scss';
 import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import UserApi from '~/api/UserApi';
 import { setAccount } from '~/store/appSlice';
 function LayoutDashboard({ children }) {
@@ -14,9 +14,19 @@ function LayoutDashboard({ children }) {
     const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useDispatch();
+    const toggleRef = useRef(null);
     const handleSignOut = () => {
         dispatch(signOut());
         navigate('/');
+    };
+    const handleToDashboard = (e) => {
+        e.preventDefault();
+        navigate('/dashboard');
+    };
+    const handleClose = () => {
+        if (toggleRef.current && window.innerWidth < 992) {
+            toggleRef.current.click();
+        }
     };
     useEffect(() => {
         if (account === undefined) {
@@ -30,17 +40,23 @@ function LayoutDashboard({ children }) {
             <Navbar expand="lg" className="shadow-lg fixed-top bg-white" style={{ height: '84px' }}>
                 <div className="container-xl">
                     <div>
-                        <Navbar.Brand href="/dashboard">
+                        <Navbar.Brand onClick={handleToDashboard} role="button">
                             <img src={hust} className="img-fluid" style={{ height: '48px' }}></img>
                         </Navbar.Brand>
                     </div>
                     <div className="d-flex align-items-center position-relative">
                         <div className={clsx(styles.nav, 'border-end border-3')}>
-                            <Navbar.Toggle aria-controls="navbarScroll" className={styles.navToggle} />
+                            <Navbar.Toggle aria-controls="navbarScroll" className={styles.navToggle} ref={toggleRef} />
                             <Navbar.Collapse id="navbarScroll" className={styles.navCollapse}>
                                 <Nav className="me-auto my-2 my-lg-0">
                                     <div className={clsx(styles.navContainer, 'me-5 d-flex align-items-center')}>
-                                        <div className="py-2 me-3" onClick={() => navigate('/dashboard')}>
+                                        <div
+                                            className="py-2 me-3"
+                                            onClick={() => {
+                                                handleClose();
+                                                navigate('/dashboard');
+                                            }}
+                                        >
                                             <span
                                                 className={clsx('fw-semibold fs-5', {
                                                     [styles.active]: location.pathname === '/dashboard',
@@ -50,7 +66,13 @@ function LayoutDashboard({ children }) {
                                                 Tổng quan
                                             </span>
                                         </div>
-                                        <div className="py-2 me-3" onClick={() => navigate('/book')}>
+                                        <div
+                                            className="py-2 me-3"
+                                            onClick={() => {
+                                                navigate('/book');
+                                                handleClose();
+                                            }}
+                                        >
                                             <span
                                                 className={clsx('fw-semibold fs-5', {
                                                     [styles.active]: location.pathname.includes('/book'),
@@ -60,7 +82,13 @@ function LayoutDashboard({ children }) {
                                                 Sách
                                             </span>
                                         </div>
-                                        <div className="py-2 me-3" onClick={() => navigate('/account')}>
+                                        <div
+                                            className="py-2 me-3"
+                                            onClick={() => {
+                                                handleClose();
+                                                navigate('/account');
+                                            }}
+                                        >
                                             <span
                                                 className={clsx('fw-semibold fs-5', {
                                                     [styles.active]: location.pathname.includes('/account'),

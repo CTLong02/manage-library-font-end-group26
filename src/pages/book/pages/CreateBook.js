@@ -4,7 +4,7 @@ import { Button, Form } from 'react-bootstrap';
 import toasts from '~/app/components/Toast';
 import clsx from 'clsx';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 function CreateBook() {
     const [validated, setValidated] = useState(false);
     const navigative = useNavigate();
@@ -13,7 +13,7 @@ function CreateBook() {
         author: '',
         type: 'Giáo trình',
         position: '',
-        remaining: '',
+        remaining: 0,
         book: null,
         image: null,
     });
@@ -36,7 +36,7 @@ function CreateBook() {
             // [name]: event.target.files,
         });
     };
-    // console.log('form----', form);
+    console.log('form----', form);
     const handleSubmit = async (event) => {
         const formAdd = event.currentTarget;
         event.preventDefault();
@@ -54,7 +54,7 @@ function CreateBook() {
             const res = await BookApi.createBook(formData);
             if (res) {
                 toasts.showSuccess('Đã thêm sách thành công');
-                navigative('book/viewAllBooks');
+                navigative('/book/viewAllBooks');
             }
         }
         setValidated(true);
@@ -70,7 +70,15 @@ function CreateBook() {
                     styles.form,
                 )}
             >
-                <div className="col-sm-10 col-md-6 col-lg-4 px-3">
+                <div className="col-12">
+                    <p className="fs-5 fw-semibold">
+                        <Link to={'/book'} className="text-decoration-none">
+                            Sách
+                        </Link>{' '}
+                        / <span>Thêm sách</span>
+                    </p>
+                </div>
+                <div className="col-12 col-sm-10 col-md-6 col-lg-4 px-3">
                     <Form.Group>
                         <Form.Label>Tên sách:</Form.Label>
                         <Form.Control
@@ -102,7 +110,7 @@ function CreateBook() {
                         </Form.Select>
                     </Form.Group>
                 </div>
-                <div className="col-sm-10 col-md-6 col-lg-4 px-3">
+                <div className="col-12 col-sm-10 col-md-6 col-lg-4 px-3">
                     <Form.Group>
                         <Form.Label>Nơi để:</Form.Label>
                         <Form.Control
@@ -131,7 +139,7 @@ function CreateBook() {
                         <Form.Control.Feedback type="invalid">Vui lòng nhập file sách</Form.Control.Feedback>
                     </Form.Group>
                 </div>
-                <div className="col-sm-10 col-md-6 col-lg-4 px-3">
+                <div className="col-12 col-sm-10 col-md-6 col-lg-4 px-3">
                     <Form.Group>
                         <Form.Label>Ảnh bìa sách</Form.Label>
                         <Form.Control required type="file" name="image" onChange={handleFormByFile}></Form.Control>

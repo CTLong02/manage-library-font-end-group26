@@ -4,6 +4,7 @@ import { updateAccessToken } from '~/api/AxiosClient';
 const initialState = {
     isLogin: localStorage.getItem('access_Token') ? true : false,
     account: undefined,
+    books: undefined,
 };
 
 export const appSlice = createSlice({
@@ -17,10 +18,14 @@ export const appSlice = createSlice({
         },
         signOut: (state) => {
             state.isLogin = false;
+            state.books = undefined;
             localStorage.removeItem('access_token');
         },
         setAccount: (state, action) => {
             state.account = action.payload;
+        },
+        setBooks: (state, action) => {
+            state.books = [...action.payload];
         },
     },
 });

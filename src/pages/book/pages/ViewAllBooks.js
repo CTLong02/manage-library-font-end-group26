@@ -1,5 +1,6 @@
 import { AgGridReact } from 'ag-grid-react';
 import { useState, useMemo, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import BookApi from '~/api/BookApi';
 function ViewAllBooks() {
     const [books, setBooks] = useState([]);
@@ -60,6 +61,14 @@ function ViewAllBooks() {
 
     return (
         <div className="container-xl py-5">
+            <div>
+                <p className="fs-5 fw-semibold">
+                    <Link to={'/book'} className="text-decoration-none">
+                        Sách
+                    </Link>{' '}
+                    / <span>Xem tất cả</span>
+                </p>
+            </div>
             <div className="h-100">
                 <div className="ag-theme-alpine" style={{ height: 500 }}>
                     <AgGridReact
