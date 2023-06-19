@@ -2,8 +2,18 @@ import { AgGridReact } from 'ag-grid-react';
 import { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import BookApi from '~/api/BookApi';
+import toasts from '~/app/components/Toast';
 function ViewAllBooks() {
     const [books, setBooks] = useState([]);
+    const handleUpdate = (event) => {
+        const res = BookApi.updateBook({
+            id: event.data.id,
+            remaining: event.newValue,
+        });
+        if (res) {
+            toasts.showSuccess('Bạn đã cập nhập sách thành công');
+        }
+    };
     const columnDefs = [
         {
             field: 'id',
@@ -28,7 +38,9 @@ function ViewAllBooks() {
         },
         {
             field: 'remaining',
-            headerName: 'Số quyển sách còn  ',
+            editable: true,
+            headerName: 'Số quyển sách còn',
+            onCellValueChanged: handleUpdate,
         },
     ];
     const [colDefs, setColDefs] = useState(columnDefs);
