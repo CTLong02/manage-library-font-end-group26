@@ -1,6 +1,6 @@
 function Footer() {
     return (
-        <footer style={{ background: 'rgb(46, 98, 233)' }}>
+        <footer style={{ background: 'rgb(46, 98, 233)' }} className="position-fixed bottom-0 start-0 end-0">
             <div className="container-xl py-3">
                 <div className="d-flex justify-content-between align-items-center flex-wrap">
                     <div>

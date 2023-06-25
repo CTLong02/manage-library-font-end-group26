@@ -22,7 +22,7 @@ const publicRoutes = [
         layout: HomeLayout,
     },
     {
-        path: '/contact',
+        path: '/questions&contact',
         component: QuestionAndContact,
         layout: HomeLayout,
     },

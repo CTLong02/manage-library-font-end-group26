@@ -24,12 +24,10 @@ function Contact() {
                         Mọi thông tin chi tiết về chính sách hợp tác kinh doanh, các gói cước sản phẩm, dịch vụ, quý
                         khách hàng vui lòng liên hệ hotline
                     </p>
-                    <Shake>
-                        <button className={styles.btnHotline}>
-                            <i className="fa-light fa-phone"></i>
-                            <span style={{ marginLeft: '10px' }}>0000.000.000</span>
-                        </button>
-                    </Shake>
+                    <button className={styles.btnHotline}>
+                        <i className="fa-light fa-phone"></i>
+                        <span style={{ marginLeft: '10px' }}>0000.000.000</span>
+                    </button>
                 </div>
             </Fade>
             <Fade top>

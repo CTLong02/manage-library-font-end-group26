@@ -33,15 +33,22 @@ function Manage() {
                         ></Cards>
                     </Col>
 
-                    <Col xs={11} md={6} xl={4} className="my-4">
-                        <Cards
-                            img={<i className="text-white fs-1 fa-sharp fa-solid fa-rectangle-history-circle-plus"></i>}
-                            title={'Thêm sách mượn'}
-                            sub={'Thêm sách được mượn , điền những thông tin như ngày mượn, ngày hết hạn, ...'}
-                            des={'Quản lý việc mượn sách'}
-                            to={'borrowing'}
-                        ></Cards>
-                    </Col>
+                    {account && account?.role === 'admin' ? (
+                        <Col xs={11} md={6} xl={4} className="my-4">
+                            <Cards
+                                img={
+                                    <i className="text-white fs-1 fa-sharp fa-solid fa-rectangle-history-circle-plus"></i>
+                                }
+                                title={'Thêm sách mượn'}
+                                sub={'Thêm sách được mượn , điền những thông tin như ngày mượn, ngày hết hạn, ...'}
+                                des={'Quản lý việc mượn sách'}
+                                to={'borrowing'}
+                            ></Cards>
+                        </Col>
+                    ) : (
+                        <></>
+                    )}
+
                     <Col xs={11} md={6} xl={4} className="my-4">
                         <Cards
                             img={<i className="text-white fs-1 fa-regular fa-list"></i>}

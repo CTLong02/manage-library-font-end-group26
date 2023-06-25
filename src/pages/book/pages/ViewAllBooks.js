@@ -6,10 +6,12 @@ import toasts from '~/app/components/Toast';
 import Delete from '../components/Delete';
 import { Modal, Col } from 'react-bootstrap';
 import imgTrash from '~/assets/images/trash.png';
+import { useSelector } from 'react-redux';
 function ViewAllBooks() {
     const [books, setBooks] = useState([]);
     const [params, setParams] = useState(null);
     const [isModal, setIsModal] = useState(false);
+    const account = useSelector((state) => state.app.account);
     const handleUpdate = (event) => {
         const res = BookApi.updateBook({
             id: event.data.id,
@@ -107,7 +109,33 @@ function ViewAllBooks() {
             setBooks([...res.data]);
         });
     }, []);
+    useEffect(() => {
+        if (account?.role === 'user') {
+            setColDefs([
+                {
+                    field: 'id',
+                    headerName: 'Số thứ tự',
+                },
+                {
+                    field: 'name',
+                    headerName: 'Tên sách',
+                },
+                {
+                    field: 'author',
+                    headerName: 'Tên tác giả',
+                },
+                {
+                    field: 'type',
+                    headerName: 'Loại sách',
+                },
 
+                {
+                    field: 'position',
+                    headerName: 'Vị trí để sách',
+                },
+            ]);
+        }
+    }, [account]);
     return (
         <div className="container-xl py-5">
             <div>

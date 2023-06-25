@@ -2,13 +2,12 @@ import { Nav, Container, Navbar, Dropdown } from 'react-bootstrap';
 import clsx from 'clsx';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { signOut } from '~/store/appSlice';
-import hust from '~/assets/images/hust.png';
-import styles from './LayoutDashboard.module.scss';
 import { useSelector } from 'react-redux';
 import { useEffect, useRef } from 'react';
 import UserApi from '~/api/UserApi';
-import { setAccount } from '~/store/appSlice';
+import hust from '~/assets/images/hust.png';
+import styles from './LayoutDashboard.module.scss';
+import { setAccount, signOut } from '~/store/appSlice';
 function LayoutDashboard({ children }) {
     const account = useSelector((state) => state.app.account);
     const navigate = useNavigate();
@@ -26,6 +25,11 @@ function LayoutDashboard({ children }) {
     const handleClose = () => {
         if (toggleRef.current && window.innerWidth < 992) {
             toggleRef.current.click();
+        }
+    };
+    const handleToInformation = () => {
+        if (account?.role === 'user') {
+            navigate('/account');
         }
     };
     useEffect(() => {
@@ -108,19 +112,19 @@ function LayoutDashboard({ children }) {
                                     <i className="fa-regular fa-user text-secondary fs-3"></i>
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu align={'end'} className={clsx(styles.menu, 'border-0 shadow-lg')}>
-                                    <Dropdown.Item className={styles.item}>
+                                    <Dropdown.Item className={styles.item} onClick={handleToInformation}>
                                         <i className="fs-4 me-2 fa-light fa-envelope"></i>
                                         {account?.email}
                                     </Dropdown.Item>
-                                    <Dropdown.Item className={styles.item}>
+                                    <Dropdown.Item className={styles.item} onClick={handleToInformation}>
                                         <i className="fs-4 me-2 fa-light fa-address-card"></i>
                                         {account?.name}
                                     </Dropdown.Item>
-                                    <Dropdown.Item className={styles.item}>
+                                    <Dropdown.Item className={styles.item} onClick={handleToInformation}>
                                         <i className="fs-4 me-2 fa-light fa-house"></i>
                                         {account?.class}
                                     </Dropdown.Item>
-                                    <Dropdown.Item className={styles.item}>
+                                    <Dropdown.Item className={styles.item} onClick={handleToInformation}>
                                         <i className="fs-4 me-2 fa-regular fa-school"></i>
                                         {account?.faculty}
                                     </Dropdown.Item>

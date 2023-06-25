@@ -10,38 +10,6 @@ import BorrowingApi from '~/api/BorrowingApi';
 import bookHelper from '~/utils/bookHelper';
 function DashBoard() {
     const [history, setHistory] = useState();
-    const [bookBorrowings, setBookBorrwing] = useState([
-        {
-            date: '2023-04-05',
-            borrow: 10,
-            restore: 5,
-        },
-        {
-            date: '2023-04-06',
-            borrow: 20,
-            restore: 12,
-        },
-        {
-            date: '2023-04-07',
-            borrow: 25,
-            restore: 1,
-        },
-        {
-            date: '2023-04-08',
-            borrow: 6,
-            restore: 15,
-        },
-        {
-            date: '2023-04-09',
-            borrow: 12,
-            restore: 5,
-        },
-        {
-            date: '2023-04-10',
-            borrow: 10,
-            restore: 8,
-        },
-    ]);
     const [books, setBooks] = useState({
         curriculum: 0,
         gradutionThesis: 0,
@@ -210,6 +178,7 @@ function DashBoard() {
             itemStyle: {
                 color: '#3f4254',
                 fontSize: '12px',
+                fontWeight: 500,
             },
             title: {
                 style: {
@@ -289,15 +258,15 @@ function DashBoard() {
         yAxis: {},
         colors: ['#E13853', '#2CBE89', '#FA9124', '#2C78BE'],
         xAxis: {
-            categories: bookBorrowings
-                ? bookBorrowings.map((item) => {
-                      return item.date;
+            categories: history
+                ? history.map((item) => {
+                      return item.time;
                   })
                 : [],
             labels: {
                 step: 1,
-                rotation: bookBorrowings.length > 10 ? 315 : 0,
-                align: bookBorrowings.length > 10 ? 'right' : 'center',
+                rotation: history?.length > 10 ? 315 : 0,
+                align: history?.length > 10 ? 'right' : 'center',
             },
         },
 
@@ -308,6 +277,7 @@ function DashBoard() {
             itemStyle: {
                 color: '#3f4254',
                 fontSize: '12px',
+                fontWeight: 500,
             },
         },
 
@@ -322,9 +292,9 @@ function DashBoard() {
         series: [
             {
                 name: 'Mượn',
-                data: bookBorrowings
-                    ? bookBorrowings.map((ele) => {
-                          return ele.borrow;
+                data: history
+                    ? history.map((ele) => {
+                          return ele.borrowedBooks;
                       })
                     : [],
                 marker: {
@@ -332,10 +302,10 @@ function DashBoard() {
                 },
             },
             {
-                name: 'Trả',
-                data: bookBorrowings
-                    ? bookBorrowings.map((ele) => {
-                          return ele.restore;
+                name: 'Hết hạn',
+                data: history
+                    ? history.map((ele) => {
+                          return ele.expiredBooks;
                       })
                     : [],
                 marker: {
@@ -445,26 +415,38 @@ function DashBoard() {
             });
         });
     }, []);
+    const dateVNToGlobal = (s) => {
+        const date = new Date();
+        date.setFullYear(s.slice(6, 10));
+        date.setMonth(s.slice(3, 5) - 1);
+        date.setDate(s.slice(0, 2));
+        return date;
+    };
     useEffect(() => {
         BorrowingApi.listBorrowing()
             .then((res) => {
                 const arr = bookHelper.countBookByDate(0, Date.now(), res.data);
+                arr.sort((a, b) => {
+                    const timeA = dateVNToGlobal(a.time);
+                    const timeB = dateVNToGlobal(b.time);
+                    return timeA - timeB;
+                });
                 setHistory([...arr]);
             })
             .catch((err) => console.log(err));
     }, []);
-    console.log(history);
+    // console.log(history);
     return (
         <div className={styles.dashboard}>
             <div className="container-xl p-4">
                 <Row>
                     <Col lg={4} className="mt-3">
                         <div className="mx-3 p-3 bg-white">
-                            <p className="fs-3 fw-semibold">Thống kê loại sách</p>
+                            <p className="fs-5 fw-bold">Thống kê loại sách</p>
                             <PieChart highcharts={Highchart} options={option1}></PieChart>
                         </div>
                         <div className="mx-3 p-3 mt-3 bg-white">
-                            <p className="fs-3 fw-semibold">Thống kê số sách theo loại sách</p>
+                            <p className="fs-5 fw-bold">Thống kê số sách theo loại sách</p>
                             <div>
                                 <PieChart highcharts={Highchart} options={option2}></PieChart>
                             </div>
@@ -472,7 +454,7 @@ function DashBoard() {
                     </Col>
                     <Col lg={8} className="mt-3">
                         <div className="mx-3 p-3 h-100 bg-white">
-                            <p className="fs-3 fw-semibold">Thống kê sách mượn và hết hạn theo ngày</p>
+                            <p className="fs-5 fw-bold">Thống kê sách mượn và hết hạn theo ngày</p>
                             <PieChart highcharts={Highchart} options={options3}></PieChart>
                         </div>
                     </Col>

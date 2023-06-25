@@ -6,9 +6,11 @@ import { Col, Dropdown, Modal } from 'react-bootstrap';
 import Delete from '../components/Delete';
 import imgTrash from '~/assets/images/trash.png';
 import toasts from '~/app/components/Toast';
+import { useSelector } from 'react-redux';
 
 function BorrowBook() {
     const [books, setBooks] = useState();
+    const account = useSelector((state) => state.app.account);
     const [params, setParams] = useState(null);
     const [isModal, setIsModal] = useState(false);
     const dataTypeDefinitions = useMemo(() => {
@@ -134,6 +136,40 @@ function BorrowBook() {
             )
             .catch((err) => console.log(err));
     }, []);
+    useEffect(() => {
+        if (account?.role === 'user') {
+            setColDefs([
+                {
+                    field: 'id',
+                    headerName: 'Số thứ tự',
+                },
+                {
+                    field: 'book.name',
+                    headerName: 'Tên sách',
+                },
+                {
+                    field: 'book.author',
+                    headerName: 'Tên tác giả',
+                },
+                {
+                    field: 'book.type',
+                    headerName: 'Loại sách',
+                },
+                {
+                    field: 'book.position',
+                    headerName: 'Nơi để',
+                },
+                {
+                    field: 'dateBorrowed',
+                    headerName: 'Ngày mượn',
+                },
+                {
+                    field: 'dateExpired',
+                    headerName: 'Ngày hết hạn',
+                },
+            ]);
+        }
+    }, [account]);
     return (
         <div className="container-xl">
             <div>

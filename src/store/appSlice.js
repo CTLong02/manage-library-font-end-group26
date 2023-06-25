@@ -19,6 +19,7 @@ export const appSlice = createSlice({
         signOut: (state) => {
             state.isLogin = false;
             state.books = undefined;
+            state.account = undefined;
             localStorage.removeItem('access_token');
         },
         setAccount: (state, action) => {
