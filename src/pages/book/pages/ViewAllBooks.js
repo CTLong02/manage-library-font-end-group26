@@ -21,10 +21,15 @@ function ViewAllBooks() {
             toasts.showSuccess('Bạn đã cập nhập sách thành công');
         }
     };
+    const handleClick = (params) => {
+        // console.log(params);
+        setParams(params);
+        setIsModal(true);
+    };
     const columnDefs = [
         {
             field: 'id',
-            headerName: 'Số thứ tự',
+            headerName: 'Mã sách',
         },
         {
             field: 'name',
@@ -54,13 +59,11 @@ function ViewAllBooks() {
             headerName: '',
             filter: false,
             cellRenderer: Delete,
+            onCellClicked: handleClick,
+            sortable: false,
         },
     ];
-    const handleClick = (params) => {
-        // console.log(params);
-        setParams(params);
-        setIsModal(true);
-    };
+
     const handleDelete = async () => {
         const response = await BookApi.deleteBook({
             id: params.data.id,
@@ -153,7 +156,6 @@ function ViewAllBooks() {
                         columnDefs={colDefs}
                         defaultColDef={defaultColDef}
                         dataTypeDefinitions={dataTypeDefinitions}
-                        onCellClicked={handleClick}
                     ></AgGridReact>
                 </div>
             </div>

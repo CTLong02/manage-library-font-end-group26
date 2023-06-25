@@ -101,7 +101,7 @@ function CreateBorrowingBook() {
                                 <span className="fw-semibold">{user?.name}</span>
                             </p>
                             <p>
-                                <span className="fw-semibold">Số sách đã mượn : </span>
+                                <span className="fw-semibold">Số sách có thể mượn : </span>
                                 <span className="fw-semibold">{user?.bookBorrowed}</span>
                             </p>
                             <p>
@@ -152,10 +152,10 @@ function CreateBorrowingBook() {
                         </div>
                     </div>
                     <div className="col-12 col-sm-10 col-md-6 col-lg-4 px-3">
-                        <Button className={styles.btnAdd} type="submit">
+                        <button className={styles.btnAdd} type="submit">
                             Thêm
                             <i className="fa-regular fa-circle-plus ms-2"></i>
-                        </Button>
+                        </button>
                     </div>
                 </Form>
             </div>

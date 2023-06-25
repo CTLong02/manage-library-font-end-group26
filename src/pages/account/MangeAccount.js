@@ -2,9 +2,12 @@ import { useEffect, useState, useMemo } from 'react';
 import Styles from './ManageAccount.module.scss';
 import UserApi from '~/api/UserApi';
 import { AgGridReact } from 'ag-grid-react';
-import Footer from '~/app/components/Footer';
 function ManageAccount() {
     const columnDefs = [
+        {
+            field: 'id',
+            headerName: 'Mã người dùng',
+        },
         {
             field: 'username',
             headerNamen: 'Tên đăng nhập',

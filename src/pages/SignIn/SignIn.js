@@ -118,14 +118,14 @@ function SignIn() {
                     <Button type="submit" className={styles.btnSubmit}>
                         Đăng nhập
                     </Button>
-                    <h4 style={{ textAlign: 'center', fontSize: '1.2rem', fontWeight: 600 }}>
+                    {/* <h4 style={{ textAlign: 'center', fontSize: '1.2rem', fontWeight: 600 }}>
                         Bạn chưa có tài khoản e-library Management System?
-                    </h4>
-                    <Link to="/signUp">
+                    </h4> */}
+                    {/* <Link to="/signUp">
                         <Button type="button" className={styles.btnSignUp}>
                             Đăng ký
                         </Button>
-                    </Link>
+                    </Link> */}
                 </div>
             </Form>
         </div>

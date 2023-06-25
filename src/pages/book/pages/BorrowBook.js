@@ -24,13 +24,13 @@ function BorrowBook() {
         };
     }, []);
     const handleClick = (params) => {
-        // console.log(params);
+        console.log(params);
         setParams(params);
         setIsModal(true);
     };
     const handleDelete = async () => {
         const response = await BorrowingApi.delelteBorrowing({
-            id: params.data.book.id,
+            id: params.data.id,
         });
         if (response) {
             toasts.showSuccess('Dữ liệu đã bị thay đổi');
@@ -93,6 +93,7 @@ function BorrowBook() {
             headerName: '',
             filter: false,
             cellRenderer: Delete,
+            onCellClicked: handleClick,
         },
     ];
 
@@ -188,7 +189,6 @@ function BorrowBook() {
                         columnDefs={colDefs}
                         dataTypeDefinitions={dataTypeDefinitions}
                         onCellContextMenu={handleContextMenu}
-                        onCellClicked={handleClick}
                     ></AgGridReact>
                 </div>
             </div>

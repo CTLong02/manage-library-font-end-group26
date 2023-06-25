@@ -78,12 +78,6 @@ function HomeLayout({ children }) {
                                         >
                                             Đăng nhập
                                         </button>
-                                        <button
-                                            className={clsx(styles.btnSignUp, 'rounded-1 px-4 py-2 fs-5')}
-                                            onClick={() => navigate('/signUp')}
-                                        >
-                                            Đăng ký
-                                        </button>
                                     </div>
                                 ) : (
                                     <></>
