@@ -28,7 +28,7 @@ function ManageAccount() {
         {
             field: 'bookBorrowed',
             cellDataType: 'number',
-            headerName: 'Số sách mượn',
+            headerName: 'Số sách có thể mượn',
         },
     ];
     const defaultColDef = useMemo(() => {

@@ -3,9 +3,18 @@ import { Link } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 import clsx from 'clsx';
 import styles from './CreateBorrowingBook.module.scss';
+import BookApi from '~/api/BookApi';
+import UserApi from '~/api/UserApi';
+import toasts from '~/app/components/Toast';
+import BorrowingApi from '~/api/BorrowingApi';
 function CreateBorrowingBook() {
-    const [validated, setValidated] = useState(false);
-    const [form, setForm] = useState();
+    const [user, setUser] = useState();
+    const [book, setBook] = useState();
+    const [form, setForm] = useState({
+        userId: '',
+        bookId: '',
+    });
+    const [error, setError] = useState(true);
     const handleForm = (event) => {
         const { name, value } = event.target;
         setForm({
@@ -13,21 +22,55 @@ function CreateBorrowingBook() {
             [`${name}`]: value,
         });
     };
-    const handleSubmit = (event) => {
-        const formAdd = event.currentTarget;
-        event.preventDefault();
-        if (formAdd.checkValidity() === false) {
-            event.stopPropagation();
+    const handleSetUser = async () => {
+        const response = await UserApi.getListUser();
+        const users = response.data;
+        console.log(users);
+        console.log(form.userId);
+        const userById = users.find((u) => {
+            return u.id == form.userId;
+        });
+        if (userById) {
+            setUser({
+                ...userById,
+            });
         } else {
+            setUser();
+            setError(true);
+            toasts.showError(`Không tồn tại người dùng với mã ${form.userId}`);
         }
-        setValidated(true);
+    };
+    const handleSetBook = async () => {
+        const response = await BookApi.getBooks();
+        const books = response.data;
+        const bookById = books.find((u) => {
+            return u.id == form.bookId;
+        });
+        if (bookById) {
+            setBook({
+                ...bookById,
+            });
+        } else {
+            setBook();
+            setError(true);
+            toasts.showError(`Không tồn tại sách với mã ${form.bookId}`);
+        }
+    };
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        if (book && user) {
+            const response = await BorrowingApi.createBorrowing(form);
+            if (response) {
+                toasts.showSuccess('Đã thêm dữ liệu thành công');
+            }
+        } else {
+            toasts.showError('Bạn điền mã người dùng hoặc mã sách chưa chính xác');
+        }
     };
     return (
         <div>
-            <div className="container-xl">
+            <div className="container-xl py-5 d-flex justify-content-center">
                 <Form
-                    noValidate
-                    validated={validated}
                     onSubmit={handleSubmit}
                     className={clsx(
                         'd-flex col-xl-9 col-lg-10 col-md-10 col-sm-10 col-10 shadow-lg p-5 rounded-4 flex-wrap align-items-center',
@@ -44,55 +87,74 @@ function CreateBorrowingBook() {
                     </div>
                     <div className="col-12 col-sm-10 col-md-6 col-lg-4 px-3">
                         <Form.Group>
-                            <Form.Label>Ngày mượn</Form.Label>
+                            <Form.Label>Mã người dùng : </Form.Label>
                             <Form.Control
-                                required
-                                placeholder="Nhập ngày mượn"
-                                name="name"
+                                placeholder="Nhập mã người dùng"
+                                name="userId"
                                 onChange={handleForm}
-                                type="date"
+                                onBlur={() => handleSetUser()}
                             ></Form.Control>
-                            <Form.Control.Feedback type="invalid">Vui lòng nhập ngày mượn</Form.Control.Feedback>
                         </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Ngày hết hạn</Form.Label>
-                            <Form.Control
-                                required
-                                placeholder="Nhập ngày hết hạn"
-                                name="author"
-                                onChange={handleForm}
-                                type="date"
-                            ></Form.Control>
-                            <Form.Control.Feedback type="invalid">Vui lòng nhập ngày hết hạn</Form.Control.Feedback>
-                        </Form.Group>
+                        <div>
+                            <p>
+                                <span className="fw-semibold">Họ tên : </span>
+                                <span className="fw-semibold">{user?.name}</span>
+                            </p>
+                            <p>
+                                <span className="fw-semibold">Số sách đã mượn : </span>
+                                <span className="fw-semibold">{user?.bookBorrowed}</span>
+                            </p>
+                            <p>
+                                <span className="fw-semibold">Email : </span>
+                                <span className="fw-semibold">{user?.email}</span>
+                            </p>
+                            <p>
+                                <span className="fw-semibold">Lớp : </span>
+                                <span className="fw-semibold">{user?.class}</span>
+                            </p>
+                            <p>
+                                <span className="fw-semibold">Khoa : </span>
+                                <span className="fw-semibold">{user?.faculty}</span>
+                            </p>
+                        </div>
                     </div>
                     <div className="col-12 col-sm-10 col-md-6 col-lg-4 px-3">
-                        <Form.Group>
-                            <Form.Label>Sinh viên : </Form.Label>
-                            <Form.Control
-                                required
-                                placeholder="Nhập thông tin sinh viên"
-                                name="position"
-                                onChange={handleForm}
-                            ></Form.Control>
-                            <Form.Control.Feedback type="invalid">
-                                Vui lòng nhập thông tin sinh viên
-                            </Form.Control.Feedback>
-                        </Form.Group>
                         <Form.Group>
                             <Form.Label>Mã sách</Form.Label>
                             <Form.Control
                                 placeholder="Nhập mã sách"
-                                name="remaining"
-                                required
+                                name="bookId"
                                 onChange={handleForm}
+                                onBlur={() => handleSetBook()}
                             ></Form.Control>
-                            <Form.Control.Feedback type="invalid">Vui lòng nhập mã sách</Form.Control.Feedback>
                         </Form.Group>
+                        <div>
+                            <p>
+                                <span className="fw-semibold">Tên sách : </span>
+                                <span className="fw-semibold">{book?.name}</span>
+                            </p>
+                            <p>
+                                <span className="fw-semibold">Tên tác giả : </span>
+                                <span className="fw-semibold">{book?.author}</span>
+                            </p>
+                            <p>
+                                <span className="fw-semibold">Loại sách : </span>
+                                <span className="fw-semibold">{book?.type}</span>
+                            </p>
+                            <p>
+                                <span className="fw-semibold">Nơi để : </span>
+                                <span className="fw-semibold">{book?.position}</span>
+                            </p>
+                            <p>
+                                <span className="fw-semibold">Số sách còn : </span>
+                                <span className="fw-semibold">{book?.remaining}</span>
+                            </p>
+                        </div>
                     </div>
                     <div className="col-12 col-sm-10 col-md-6 col-lg-4 px-3">
                         <Button className={styles.btnAdd} type="submit">
                             Thêm
+                            <i className="fa-regular fa-circle-plus ms-2"></i>
                         </Button>
                     </div>
                 </Form>
