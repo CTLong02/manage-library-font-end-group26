@@ -36,6 +36,7 @@ function BorrowBook() {
             toasts.showSuccess('Dữ liệu đã bị thay đổi');
             repeat();
             setIsModal(false);
+            setParams(undefined);
         }
     };
     const columnDefs = [
@@ -171,6 +172,7 @@ function BorrowBook() {
             ]);
         }
     }, [account]);
+    // console.log(params);
     return (
         <div className="container-xl">
             <div>

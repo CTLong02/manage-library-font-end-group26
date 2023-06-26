@@ -25,8 +25,8 @@ function CreateBorrowingBook() {
     const handleSetUser = async () => {
         const response = await UserApi.getListUser();
         const users = response.data;
-        console.log(users);
-        console.log(form.userId);
+        // console.log(users);
+        // console.log(form.userId);
         const userById = users.find((u) => {
             return u.id == form.userId;
         });
@@ -62,6 +62,12 @@ function CreateBorrowingBook() {
             const response = await BorrowingApi.createBorrowing(form);
             if (response) {
                 toasts.showSuccess('Đã thêm dữ liệu thành công');
+                setForm({
+                    userId: '',
+                    bookId: '',
+                });
+                setUser(undefined);
+                setBook(undefined);
             }
         } else {
             toasts.showError('Bạn điền mã người dùng hoặc mã sách chưa chính xác');
@@ -93,6 +99,7 @@ function CreateBorrowingBook() {
                                 name="userId"
                                 onChange={handleForm}
                                 onBlur={() => handleSetUser()}
+                                value={form?.userId}
                             ></Form.Control>
                         </Form.Group>
                         <div>
@@ -126,6 +133,7 @@ function CreateBorrowingBook() {
                                 name="bookId"
                                 onChange={handleForm}
                                 onBlur={() => handleSetBook()}
+                                value={form?.bookId}
                             ></Form.Control>
                         </Form.Group>
                         <div>
