@@ -35,7 +35,7 @@ function AccountInfor() {
                         </Col>
                         <Col md={6} xl={4} xs={10}>
                             <Form.Group className="mb-3">
-                                <Form.Label>Số sách có thể mượn mượn</Form.Label>
+                                <Form.Label>Số sách có thể mượn</Form.Label>
                                 <Form.Control value={account?.bookBorrowed} disabled></Form.Control>
                             </Form.Group>
                         </Col>

@@ -18,7 +18,7 @@ function ViewAllBooks() {
             remaining: event.newValue,
         });
         if (res) {
-            toasts.showSuccess('Bạn đã cập nhập sách thành công');
+            toasts.showSuccess('Bạn đã cập nhập số lượng sách thành công');
         }
     };
     const handleClick = (params) => {
