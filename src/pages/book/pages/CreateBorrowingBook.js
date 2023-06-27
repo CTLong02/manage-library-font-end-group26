@@ -7,7 +7,9 @@ import BookApi from '~/api/BookApi';
 import UserApi from '~/api/UserApi';
 import toasts from '~/app/components/Toast';
 import BorrowingApi from '~/api/BorrowingApi';
+import { useNavigate } from 'react-router-dom';
 function CreateBorrowingBook() {
+    const navigative = useNavigate();
     const [user, setUser] = useState();
     const [book, setBook] = useState();
     const [form, setForm] = useState({
@@ -23,37 +25,41 @@ function CreateBorrowingBook() {
         });
     };
     const handleSetUser = async () => {
-        const response = await UserApi.getListUser();
-        const users = response.data;
-        // console.log(users);
-        // console.log(form.userId);
-        const userById = users.find((u) => {
-            return u.id == form.userId;
-        });
-        if (userById) {
-            setUser({
-                ...userById,
+        if (form.userId) {
+            const response = await UserApi.getListUser();
+            const users = response.data;
+            // console.log(users);
+            // console.log(form.userId);
+            const userById = users.find((u) => {
+                return u.id == form.userId;
             });
-        } else {
-            setUser();
-            setError(true);
-            toasts.showError(`Không tồn tại người dùng với mã ${form.userId}`);
+            if (userById) {
+                setUser({
+                    ...userById,
+                });
+            } else {
+                setUser();
+                setError(true);
+                toasts.showError(`Không tồn tại người dùng với mã ${form.userId}`);
+            }
         }
     };
     const handleSetBook = async () => {
-        const response = await BookApi.getBooks();
-        const books = response.data;
-        const bookById = books.find((u) => {
-            return u.id == form.bookId;
-        });
-        if (bookById) {
-            setBook({
-                ...bookById,
+        if (form.bookId) {
+            const response = await BookApi.getBooks();
+            const books = response.data;
+            const bookById = books.find((u) => {
+                return u.id == form.bookId;
             });
-        } else {
-            setBook();
-            setError(true);
-            toasts.showError(`Không tồn tại sách với mã ${form.bookId}`);
+            if (bookById) {
+                setBook({
+                    ...bookById,
+                });
+            } else {
+                setBook();
+                setError(true);
+                toasts.showError(`Không tồn tại sách với mã ${form.bookId}`);
+            }
         }
     };
     const handleSubmit = async (event) => {
@@ -62,6 +68,7 @@ function CreateBorrowingBook() {
             const response = await BorrowingApi.createBorrowing(form);
             if (response) {
                 toasts.showSuccess('Đã thêm dữ liệu thành công');
+                navigative('/book/borrow');
                 setForm({
                     userId: '',
                     bookId: '',

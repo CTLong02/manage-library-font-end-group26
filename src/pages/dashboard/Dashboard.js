@@ -4,12 +4,18 @@ import PieChart from 'highcharts-react-official';
 import Highchart from 'highcharts';
 import styles from './Dashboard.module.scss';
 import BookApi from '~/api/BookApi';
-import './Dashboard.css';
 import { useEffect, useState } from 'react';
 import BorrowingApi from '~/api/BorrowingApi';
 import bookHelper from '~/utils/bookHelper';
+import { Dropdown } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendarDay } from '@fortawesome/free-solid-svg-icons';
+import dateToString, { dateToHasTimePrev, dateWithQuarter, dateWithYear, dateTo } from '~/utils/dateToString';
+import './Dashboard.css';
 function DashBoard() {
     const [history, setHistory] = useState();
+    const [title, setTitle] = useState('Tất cả');
+    const [option, setOption] = useState(0);
     const [books, setBooks] = useState({
         curriculum: 0,
         gradutionThesis: 0,
@@ -423,9 +429,100 @@ function DashBoard() {
         return date;
     };
     useEffect(() => {
+        let begin = '';
+        let end = '';
+        switch (option) {
+            case 0:
+                setTitle('Tất cả');
+                begin = 0;
+                end = dateTo(dateToHasTimePrev(Date.now(), -100));
+                break;
+            case 1:
+                setTitle('Hôm nay');
+                begin = dateTo(dateToHasTimePrev(Date.now()));
+                end = dateTo(dateToHasTimePrev(Date.now()));
+                break;
+            case 2:
+                setTitle('Hôm qua');
+                begin = dateTo(dateToHasTimePrev(Date.now(), 1));
+                end = dateTo(dateToHasTimePrev(Date.now()));
+                break;
+            case 3:
+                setTitle(
+                    `${dateToString(dateToHasTimePrev(Date.now(), 6))} - ${dateToString(
+                        dateToHasTimePrev(Date.now()),
+                    )}`,
+                );
+                begin = dateTo(dateToHasTimePrev(Date.now(), 6));
+                end = dateTo(dateToHasTimePrev(Date.now()));
+                break;
+            case 4:
+                setTitle(
+                    `${dateToString(dateToHasTimePrev(Date.now(), 14))} - ${dateToString(
+                        dateToHasTimePrev(Date.now()),
+                    )}`,
+                );
+                begin = dateTo(dateToHasTimePrev(Date.now(), 14));
+                end = dateTo(dateToHasTimePrev(Date.now()));
+                break;
+            case 5:
+                setTitle(
+                    `${dateToString(dateToHasTimePrev(Date.now(), 29))} - ${dateToString(
+                        dateToHasTimePrev(Date.now()),
+                    )}`,
+                );
+                begin = dateTo(dateToHasTimePrev(Date.now(), 29));
+                end = dateTo(dateToHasTimePrev(Date.now()));
+                break;
+            case 6:
+                setTitle(
+                    `${dateToString(dateWithQuarter(Date.now(), 1).dateBegin)} - ${dateToString(
+                        dateWithQuarter(Date.now(), 1).dateEnd,
+                    )}`,
+                );
+                begin = dateTo(dateWithQuarter(Date.now(), 1).dateBegin);
+                end = dateTo(dateWithQuarter(Date.now(), 1).dateEnd);
+                break;
+            case 7:
+                setTitle(
+                    `${dateToString(dateWithQuarter(Date.now(), 2).dateBegin)} - ${dateToString(
+                        dateWithQuarter(Date.now(), 2).dateEnd,
+                    )}`,
+                );
+                begin = dateTo(dateWithQuarter(Date.now(), 2).dateBegin);
+                end = dateTo(dateWithQuarter(Date.now(), 2).dateEnd);
+                break;
+            case 8:
+                setTitle(
+                    `${dateToString(dateWithQuarter(Date.now(), 3).dateBegin)} - ${dateToString(
+                        dateWithQuarter(Date.now(), 3).dateEnd,
+                    )}`,
+                );
+                begin = dateTo(dateWithQuarter(Date.now(), 3).dateBegin);
+                end = dateTo(dateWithQuarter(Date.now(), 3).dateEnd);
+                break;
+            case 9:
+                setTitle(
+                    `${dateToString(dateWithQuarter(Date.now(), 4).dateBegin)} - ${dateToString(
+                        dateWithQuarter(Date.now(), 4).dateEnd,
+                    )}`,
+                );
+                begin = dateTo(dateWithQuarter(Date.now(), 4).dateBegin);
+                end = dateTo(dateWithQuarter(Date.now(), 4).dateEnd);
+                break;
+            case 10:
+                setTitle(
+                    `${dateToString(dateWithYear(Date.now()).dateBegin)} - ${dateToString(
+                        dateWithYear(Date.now()).dateEnd,
+                    )}`,
+                );
+                begin = dateTo(dateWithYear(Date.now()).dateBegin);
+                end = dateTo(dateWithYear(Date.now()).dateEnd);
+                break;
+        }
         BorrowingApi.listBorrowing()
             .then((res) => {
-                const arr = bookHelper.countBookByDate(0, Date.now(), res.data);
+                const arr = bookHelper.countBookByDate(begin, end, res.data);
                 arr.sort((a, b) => {
                     const timeA = dateVNToGlobal(a.time);
                     const timeB = dateVNToGlobal(b.time);
@@ -434,8 +531,7 @@ function DashBoard() {
                 setHistory([...arr]);
             })
             .catch((err) => console.log(err));
-    }, []);
-    // console.log(history);
+    }, [option]);
     return (
         <div className={styles.dashboard}>
             <div className="container-xl p-4">
@@ -454,7 +550,102 @@ function DashBoard() {
                     </Col>
                     <Col lg={8} className="mt-3">
                         <div className="mx-3 p-3 h-100 bg-white">
-                            <p className="fs-5 fw-bold">Thống kê sách mượn và hết hạn theo ngày</p>
+                            <div className="d-flex justify-content-between align-items-center">
+                                <p className="fs-5 fw-bold">Thống kê sách mượn và hết hạn theo ngày</p>
+                                <div className={styles.options}>
+                                    <Dropdown>
+                                        <Dropdown.Toggle as={'div'} className={styles.toggle}>
+                                            <FontAwesomeIcon
+                                                icon={faCalendarDay}
+                                                style={{ fontSize: '1.4rem' }}
+                                            ></FontAwesomeIcon>
+                                            <span style={{ marginLeft: '10px' }}>Thời gian</span> : <span>{title}</span>
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu
+                                            as={'div'}
+                                            className={clsx(styles.menuOption, 'border-0 shadow-lg')}
+                                        >
+                                            <Dropdown.Item
+                                                as={'div'}
+                                                className={clsx(styles.itemOption, { [styles.active]: option === 0 })}
+                                                onClick={() => setOption(0)}
+                                            >
+                                                Tất cả
+                                            </Dropdown.Item>
+                                            <Dropdown.Item
+                                                as={'div'}
+                                                className={clsx(styles.itemOption, { [styles.active]: option === 1 })}
+                                                onClick={() => setOption(1)}
+                                            >
+                                                Hôm nay
+                                            </Dropdown.Item>
+                                            <Dropdown.Item
+                                                as={'div'}
+                                                className={clsx(styles.itemOption, { [styles.active]: option === 2 })}
+                                                onClick={() => setOption(2)}
+                                            >
+                                                Hôm qua
+                                            </Dropdown.Item>
+                                            <Dropdown.Item
+                                                as={'div'}
+                                                className={clsx(styles.itemOption, { [styles.active]: option === 3 })}
+                                                onClick={() => setOption(3)}
+                                            >
+                                                7 ngày gần đây
+                                            </Dropdown.Item>
+                                            <Dropdown.Item
+                                                as={'div'}
+                                                className={clsx(styles.itemOption, { [styles.active]: option === 4 })}
+                                                onClick={() => setOption(4)}
+                                            >
+                                                15 ngày gần đây
+                                            </Dropdown.Item>
+                                            <Dropdown.Item
+                                                as={'div'}
+                                                className={clsx(styles.itemOption, { [styles.active]: option === 5 })}
+                                                onClick={() => setOption(5)}
+                                            >
+                                                30 ngày gần đây
+                                            </Dropdown.Item>
+                                            <Dropdown.Item
+                                                as={'div'}
+                                                className={clsx(styles.itemOption, { [styles.active]: option === 6 })}
+                                                onClick={() => setOption(6)}
+                                            >
+                                                Quý I
+                                            </Dropdown.Item>
+                                            <Dropdown.Item
+                                                as={'div'}
+                                                className={clsx(styles.itemOption, { [styles.active]: option === 7 })}
+                                                onClick={() => setOption(7)}
+                                            >
+                                                Quý II
+                                            </Dropdown.Item>
+                                            <Dropdown.Item
+                                                as={'div'}
+                                                className={clsx(styles.itemOption, { [styles.active]: option === 8 })}
+                                                onClick={() => setOption(8)}
+                                            >
+                                                Quý III
+                                            </Dropdown.Item>
+                                            <Dropdown.Item
+                                                as={'div'}
+                                                className={clsx(styles.itemOption, { [styles.active]: option === 9 })}
+                                                onClick={() => setOption(9)}
+                                            >
+                                                Quý IV
+                                            </Dropdown.Item>
+                                            <Dropdown.Item
+                                                as={'div'}
+                                                className={clsx(styles.itemOption, { [styles.active]: option === 10 })}
+                                                onClick={() => setOption(10)}
+                                            >
+                                                Năm nay
+                                            </Dropdown.Item>
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                </div>
+                            </div>
                             <PieChart highcharts={Highchart} options={options3}></PieChart>
                         </div>
                     </Col>

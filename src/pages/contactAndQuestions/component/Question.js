@@ -13,12 +13,6 @@ function Question({ arrQuestionAndAnswers }) {
             <div className="mb-4">
                 <h1 style={{ fontSize: '3.6rem', fontWeight: 700, color: '#18214D' }}>Các câu hỏi thường gặp</h1>
             </div>
-            <Fade bottom>
-                <div className={styles.search}>
-                    <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.iconSearch}></FontAwesomeIcon>
-                    <input placeholder="Tìm kiếm" className={styles.inputSearch}></input>
-                </div>
-            </Fade>
             <div className={styles.listQuestion}>
                 <Accordion defaultActiveKey={null} flush onSelect={(e) => setIndexActive(e)}>
                     {Array.isArray(arrQuestionAndAnswers) ? (

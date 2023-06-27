@@ -55,17 +55,17 @@ function CreateBook() {
             formData.append('image', form.image);
             const res = await BookApi.createBook(formData);
             if (res) {
-                // navigative('/book/viewAllBooks');
-                setForm({
-                    name: '',
-                    author: '',
-                    type: 'Giáo trình',
-                    position: '',
-                    remaining: 0,
-                    book: undefined,
-                    image: undefined,
-                });
+                // setForm({
+                //     name: '',
+                //     author: '',
+                //     type: 'Giáo trình',
+                //     position: '',
+                //     remaining: 0,
+                //     book: undefined,
+                //     image: undefined,
+                // });
                 toasts.showSuccess('Đã thêm sách thành công');
+                navigative('/book/viewAllBooks');
             }
         }
         setValidated(true);
@@ -150,26 +150,14 @@ function CreateBook() {
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>File sách:</Form.Label>
-                        <Form.Control
-                            required
-                            type="file"
-                            name="book"
-                            onChange={handleFormByFile}
-                            value={form.book}
-                        ></Form.Control>
+                        <Form.Control required type="file" name="book" onChange={handleFormByFile}></Form.Control>
                         <Form.Control.Feedback type="invalid">Vui lòng nhập file sách</Form.Control.Feedback>
                     </Form.Group>
                 </div>
                 <div className="col-12 col-sm-10 col-md-6 col-lg-4 px-3">
                     <Form.Group>
                         <Form.Label>Ảnh bìa sách</Form.Label>
-                        <Form.Control
-                            required
-                            type="file"
-                            name="image"
-                            onChange={handleFormByFile}
-                            value={form.image}
-                        ></Form.Control>
+                        <Form.Control required type="file" name="image" onChange={handleFormByFile}></Form.Control>
                         <Form.Control.Feedback type="invalid">Vui lòng nhập bìa sách</Form.Control.Feedback>
                     </Form.Group>
                     <button className={styles.btnAdd} type="submit">
