@@ -20,7 +20,7 @@ function QuestionAndContact() {
     ]);
     return (
         <section className={styles.help}>
-            <div className="container-xl">
+            <div className="container-xl p-4">
                 <Row>
                     <Col lg={7}>
                         <Question arrQuestionAndAnswers={[...faqs]}></Question>

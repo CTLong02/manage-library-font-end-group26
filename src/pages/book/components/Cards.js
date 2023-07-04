@@ -6,7 +6,7 @@ function Cards({ img, title, sub, des, to }) {
     const navigative = useNavigate();
     return (
         <Card
-            className={clsx(styles.card, 'd-flex flex-column align-items-center py-4 px-2 h-100 bg-white shadow-lg')}
+            className={clsx(styles.card, 'd-flex flex-column align-items-center py-4 px-2 h-100 bg-white shadow-lg ')}
             onClick={() => navigative(`${to}`)}
         >
             {/* <Card.Img variant="top" src={img} style={{ objectFit: 'cover', width: '70px' }} className="py-2" /> */}
@@ -16,7 +16,7 @@ function Cards({ img, title, sub, des, to }) {
             >
                 {img}
             </div>
-            <Card.Body className="d-flex flex-column align-items-center">
+            <Card.Body className="d-flex flex-column align-items-center justify-content-between">
                 <Card.Title
                     style={{ fontSize: '1.3rem', color: '#3f4254', fontWeight: 700 }}
                     className="py-2 text-center"

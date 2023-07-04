@@ -4,7 +4,7 @@ import { Button, Form } from 'react-bootstrap';
 import toasts from '~/app/components/Toast';
 import clsx from 'clsx';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 function CreateBook() {
     const [validated, setValidated] = useState(false);
     const navigative = useNavigate();
@@ -13,9 +13,9 @@ function CreateBook() {
         author: '',
         type: 'Giáo trình',
         position: '',
-        remaining: '',
-        book: null,
-        image: null,
+        remaining: 0,
+        book: undefined,
+        image: undefined,
     });
     const handleForm = (event) => {
         const { name, value } = event.target;
@@ -26,17 +26,19 @@ function CreateBook() {
     };
     const handleFormByFile = (event) => {
         const { name } = event.target;
-        // console.log(event.target.value);
-        const fileData = event.target.files[0];
-        const reader = new FileReader();
-        reader.readAsDataURL(event.target.files[0]);
-        setForm({
-            ...form,
-            [name]: fileData,
-            // [name]: event.target.files,
-        });
+
+        if (event.target) {
+            const fileData = event.target.files[0];
+            const reader = new FileReader();
+            reader.readAsDataURL(event.target.files[0]);
+            setForm({
+                ...form,
+                [name]: fileData,
+                // [name]: event.target.files,
+            });
+        }
     };
-    console.log('form----', form);
+    // console.log('form----', form);
     const handleSubmit = async (event) => {
         const formAdd = event.currentTarget;
         event.preventDefault();
@@ -53,8 +55,17 @@ function CreateBook() {
             formData.append('image', form.image);
             const res = await BookApi.createBook(formData);
             if (res) {
+                // setForm({
+                //     name: '',
+                //     author: '',
+                //     type: 'Giáo trình',
+                //     position: '',
+                //     remaining: 0,
+                //     book: undefined,
+                //     image: undefined,
+                // });
                 toasts.showSuccess('Đã thêm sách thành công');
-                navigative('/manage/viewAllBooks');
+                navigative('/book/viewAllBooks');
             }
         }
         setValidated(true);
@@ -70,7 +81,15 @@ function CreateBook() {
                     styles.form,
                 )}
             >
-                <div className="col-sm-10 col-md-6 col-lg-4 px-3">
+                <div className="col-12">
+                    <p className="fs-5 fw-semibold">
+                        <Link to={'/book'} className="text-decoration-none">
+                            Sách
+                        </Link>{' '}
+                        / <span>Thêm sách</span>
+                    </p>
+                </div>
+                <div className="col-12 col-sm-10 col-md-6 col-lg-4 px-3">
                     <Form.Group>
                         <Form.Label>Tên sách:</Form.Label>
                         <Form.Control
@@ -78,6 +97,7 @@ function CreateBook() {
                             placeholder="Nhập tên sách"
                             name="name"
                             onChange={handleForm}
+                            value={form.name}
                         ></Form.Control>
                         <Form.Control.Feedback type="invalid">Vui lòng nhập tên sách</Form.Control.Feedback>
                     </Form.Group>
@@ -88,12 +108,13 @@ function CreateBook() {
                             placeholder="Nhập tên tác giả"
                             name="author"
                             onChange={handleForm}
+                            value={form.author}
                         ></Form.Control>
                         <Form.Control.Feedback type="invalid">Vui lòng nhập tên tác giả</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Loại sách:</Form.Label>
-                        <Form.Select onChange={handleForm} name="type">
+                        <Form.Select onChange={handleForm} name="type" value={form.type}>
                             <option value={'Giáo trình'}>Giáo trình</option>
                             <option value={'Đồ án tốt nghiệp'}>Đồ án tốt nghiệp</option>
                             <option value={'Sách tham khảo'}>Sách tham khảo</option>
@@ -102,7 +123,7 @@ function CreateBook() {
                         </Form.Select>
                     </Form.Group>
                 </div>
-                <div className="col-sm-10 col-md-6 col-lg-4 px-3">
+                <div className="col-12 col-sm-10 col-md-6 col-lg-4 px-3">
                     <Form.Group>
                         <Form.Label>Nơi để:</Form.Label>
                         <Form.Control
@@ -110,6 +131,7 @@ function CreateBook() {
                             placeholder="Nhập nơi để"
                             name="position"
                             onChange={handleForm}
+                            value={form.position}
                         ></Form.Control>
                         <Form.Control.Feedback type="invalid">Vui lòng nhập nơi để</Form.Control.Feedback>
                     </Form.Group>
@@ -122,6 +144,7 @@ function CreateBook() {
                             name="remaining"
                             required
                             onChange={handleForm}
+                            value={form.remaining}
                         ></Form.Control>
                         <Form.Control.Feedback type="invalid">Vui lòng nhập số sách</Form.Control.Feedback>
                     </Form.Group>
@@ -131,15 +154,15 @@ function CreateBook() {
                         <Form.Control.Feedback type="invalid">Vui lòng nhập file sách</Form.Control.Feedback>
                     </Form.Group>
                 </div>
-                <div className="col-sm-10 col-md-6 col-lg-4 px-3">
+                <div className="col-12 col-sm-10 col-md-6 col-lg-4 px-3">
                     <Form.Group>
                         <Form.Label>Ảnh bìa sách</Form.Label>
                         <Form.Control required type="file" name="image" onChange={handleFormByFile}></Form.Control>
                         <Form.Control.Feedback type="invalid">Vui lòng nhập bìa sách</Form.Control.Feedback>
                     </Form.Group>
-                    <Button className={styles.btnAdd} type="submit">
+                    <button className={styles.btnAdd} type="submit">
                         Thêm
-                    </Button>
+                    </button>
                 </div>
             </Form>
         </div>

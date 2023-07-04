@@ -19,7 +19,13 @@ function ViewAll() {
     const handleFilterByType = (type) => {
         setTypeByFilter(type);
     };
-    const handleUpdate = (id) => {};
+    const handleUpdate = async (id, value) => {
+        const res = await BookApi.updateBook({
+            id: id,
+            remaining: value,
+        });
+        console.log('res', res);
+    };
     useEffect(() => {
         BookApi.getBooks().then((res) => {
             setBooks([...res.data]);
@@ -163,13 +169,15 @@ function ViewAll() {
                                     <td>{book.type}</td>
                                     <td>{book.position}</td>
                                     {book.id === editId ? (
-                                        <input
-                                            type="number"
-                                            defaultValue={book.remaining}
-                                            className="w-100 border-0"
-                                            autoFocus
-                                            onBlur={() => handleUpdate(book.id)}
-                                        ></input>
+                                        <td>
+                                            <input
+                                                type="number"
+                                                defaultValue={book.remaining}
+                                                className="w-100 border-0"
+                                                autoFocus
+                                                onBlur={(event) => handleUpdate(book.id, event.target.value)}
+                                            ></input>
+                                        </td>
                                     ) : (
                                         <td>{book.remaining}</td>
                                     )}
