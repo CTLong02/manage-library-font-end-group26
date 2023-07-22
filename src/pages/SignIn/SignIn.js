@@ -1,4 +1,4 @@
-import { Form, Button, Col, Row } from 'react-bootstrap';
+import { Form, Button, Col, Row, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import styles from './SignIn.module.scss';
 import { useState } from 'react';
@@ -13,6 +13,7 @@ function SignIn() {
     const isLogin = useSelector((state) => state.app.isLogin);
     const dispatch = useDispatch();
     const [validated, setValidated] = useState(false);
+    const [isLoading, setIsloading] = useState(false);
     const [formData, setFormData] = useState({
         username: undefined,
         password: undefined,
@@ -42,13 +43,22 @@ function SignIn() {
             toasts.showSuccess(`Xin chào ${resInfor.data.name}`);
             navigative('/dashboard');
         }
+        setIsloading(false);
     };
     return (
         <div className={styles.signIn}>
             <header className={styles.headerForm}>
                 <h1>Đăng nhập e-library Management System</h1>
             </header>
-            <Form noValidate validated={validated} onSubmit={handleSubmit} className={styles.form}>
+            <Form
+                noValidate
+                validated={validated}
+                onSubmit={(event) => {
+                    handleSubmit(event);
+                    setIsloading(true);
+                }}
+                className={styles.form}
+            >
                 <div className={styles.bodyForm}>
                     <Form.Group controlId="validationCustom01" className={styles.formGroup}>
                         <Form.Label>Email/Tên đăng nhập</Form.Label>
@@ -117,6 +127,18 @@ function SignIn() {
                 <div className={styles.suggestSingUp}>
                     <Button type="submit" className={styles.btnSubmit}>
                         Đăng nhập
+                        {isLoading ? (
+                            <Spinner
+                                className="ms-2"
+                                as="span"
+                                animation="border"
+                                size="sm"
+                                role="status"
+                                aria-hidden="true"
+                            />
+                        ) : (
+                            <></>
+                        )}
                     </Button>
                     {/* <h4 style={{ textAlign: 'center', fontSize: '1.2rem', fontWeight: 600 }}>
                         Bạn chưa có tài khoản e-library Management System?

@@ -2,16 +2,18 @@ import { useState, useMemo, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { AgGridReact } from 'ag-grid-react';
 import BorrowingApi from '~/api/BorrowingApi';
-import { Col, Dropdown, Modal } from 'react-bootstrap';
+import { Col, Modal, Spinner } from 'react-bootstrap';
 import Delete from '../components/Delete';
 import imgTrash from '~/assets/images/trash.png';
 import toasts from '~/app/components/Toast';
 import { useSelector } from 'react-redux';
+import bookHelper from '~/utils/bookHelper';
 
 function BorrowBook() {
     const [books, setBooks] = useState();
     const account = useSelector((state) => state.app.account);
     const [params, setParams] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
     const [isModal, setIsModal] = useState(false);
     const dataTypeDefinitions = useMemo(() => {
         return {
@@ -26,7 +28,9 @@ function BorrowBook() {
     const handleClick = (params) => {
         console.log(params);
         setParams(params);
-        setIsModal(true);
+        if (params?.data.status === 'borrowed') {
+            setIsModal(true);
+        }
     };
     const handleDelete = async () => {
         const response = await BorrowingApi.delelteBorrowing({
@@ -90,6 +94,14 @@ function BorrowBook() {
             headerName: 'Ngày hết hạn',
         },
         {
+            field: 'status',
+            headerName: 'Trạng thái',
+        },
+        {
+            field: 'dateReturned',
+            headerName: 'Ngày trả',
+        },
+        {
             field: 'option',
             headerName: '',
             filter: false,
@@ -101,7 +113,7 @@ function BorrowBook() {
     const defaultColDef = useMemo(() => {
         return {
             flex: 1,
-            minWidth: 180,
+            minWidth: 120,
             filter: true,
             floatingFilter: true,
             sortable: true,
@@ -117,26 +129,52 @@ function BorrowBook() {
         const res = await BorrowingApi.listBorrowing();
         setBooks([
             ...res.data.map((book) => {
-                return {
-                    ...book,
-                    option: 'Xóa',
-                };
+                if (book.status === 'borrowed') {
+                    return {
+                        ...book,
+                        option: 'Xóa',
+                    };
+                } else if (book.status === 'expired') {
+                    return {
+                        ...book,
+                    };
+                } else {
+                    return {
+                        ...book,
+                        dateReturned: bookHelper.DateGolalToVN(book.dateReturned),
+                    };
+                }
             }),
         ]);
     };
     useEffect(() => {
-        BorrowingApi.listBorrowing()
-            .then((res) =>
-                setBooks([
-                    ...res.data.map((book) => {
-                        return {
-                            ...book,
-                            option: 'Xóa',
-                        };
-                    }),
-                ]),
-            )
-            .catch((err) => console.log(err));
+        setTimeout(() => {
+            BorrowingApi.listBorrowing()
+                .then(
+                    (res) =>
+                        setBooks([
+                            ...res.data.map((book) => {
+                                if (book.status === 'borrowed') {
+                                    return {
+                                        ...book,
+                                        option: 'Xóa',
+                                    };
+                                } else if (book.status === 'expired') {
+                                    return {
+                                        ...book,
+                                    };
+                                } else {
+                                    return {
+                                        ...book,
+                                        dateReturned: bookHelper.DateGolalToVN(book.dateReturned),
+                                    };
+                                }
+                            }),
+                        ]),
+                    setIsLoading(false),
+                )
+                .catch((err) => console.log(err));
+        }, 250);
     }, []);
     useEffect(() => {
         if (account?.role === 'user') {
@@ -169,12 +207,20 @@ function BorrowBook() {
                     field: 'dateExpired',
                     headerName: 'Ngày hết hạn',
                 },
+                {
+                    field: 'status',
+                    headerName: 'Trạng thái',
+                },
+                {
+                    field: 'dateReturned',
+                    headerName: 'Ngày trả',
+                },
             ]);
         }
     }, [account]);
     // console.log(params);
     return (
-        <div className="container-xl">
+        <div className="container-xl py-4">
             <div>
                 <p className="fs-5 fw-semibold">
                     <Link to={'/book'} className="text-decoration-none">
@@ -183,20 +229,26 @@ function BorrowBook() {
                     / <span>Mượn sách</span>
                 </p>
             </div>
-            <div className="h-100">
-                <div className="ag-theme-alpine" style={{ height: 500 }}>
-                    <AgGridReact
-                        rowData={books}
-                        defaultColDef={defaultColDef}
-                        columnDefs={colDefs}
-                        dataTypeDefinitions={dataTypeDefinitions}
-                        onCellContextMenu={handleContextMenu}
-                    ></AgGridReact>
+            {isLoading ? (
+                <div className="d-flex justify-content-center align-items-center bg-light" style={{ height: '500px' }}>
+                    <Spinner animation="border" variant="primary"></Spinner>
                 </div>
-            </div>
+            ) : (
+                <div className="h-100">
+                    <div className="ag-theme-alpine" style={{ height: 500 }}>
+                        <AgGridReact
+                            rowData={books}
+                            columnDefs={colDefs}
+                            defaultColDef={defaultColDef}
+                            dataTypeDefinitions={dataTypeDefinitions}
+                            onCellContextMenu={handleContextMenu}
+                        ></AgGridReact>
+                    </div>
+                </div>
+            )}
             <Modal show={isModal} animation centered>
                 <Modal.Header className="d-flex justify-content-center">
-                    <Modal.Title>Xóa sách mượn</Modal.Title>
+                    <Modal.Title>Trả sách</Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ backgroundColor: '#F6F7FB' }} className="p-5">
                     <div className="d-flex justify-content-center">

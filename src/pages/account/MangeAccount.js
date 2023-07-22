@@ -10,7 +10,7 @@ function ManageAccount() {
         },
         {
             field: 'username',
-            headerNamen: 'Tên đăng nhập',
+            headerName: 'Tên đăng nhập',
         },
         {
             field: 'name',

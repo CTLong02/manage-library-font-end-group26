@@ -4,13 +4,14 @@ import { Link } from 'react-router-dom';
 import BookApi from '~/api/BookApi';
 import toasts from '~/app/components/Toast';
 import Delete from '../components/Delete';
-import { Modal, Col } from 'react-bootstrap';
+import { Modal, Col, Spinner } from 'react-bootstrap';
 import imgTrash from '~/assets/images/trash.png';
 import { useSelector } from 'react-redux';
 function ViewAllBooks() {
     const [books, setBooks] = useState([]);
     const [params, setParams] = useState(null);
     const [isModal, setIsModal] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const account = useSelector((state) => state.app.account);
     const handleUpdate = (event) => {
         const res = BookApi.updateBook({
@@ -20,11 +21,6 @@ function ViewAllBooks() {
         if (res) {
             toasts.showSuccess('Bạn đã cập nhập số lượng sách thành công');
         }
-    };
-    const handleClick = (params) => {
-        // console.log(params);
-        setParams(params);
-        setIsModal(true);
     };
     const columnDefs = [
         {
@@ -53,14 +49,6 @@ function ViewAllBooks() {
             editable: true,
             headerName: 'Số quyển sách còn',
             onCellValueChanged: handleUpdate,
-        },
-        {
-            field: 'option',
-            headerName: '',
-            filter: false,
-            cellRenderer: Delete,
-            onCellClicked: handleClick,
-            sortable: false,
         },
     ];
 
@@ -108,9 +96,12 @@ function ViewAllBooks() {
         };
     }, []);
     useEffect(() => {
-        BookApi.getBooks().then((res) => {
-            setBooks([...res.data]);
-        });
+        setTimeout(() => {
+            BookApi.getBooks().then((res) => {
+                setBooks([...res.data]);
+                setIsLoading(false);
+            });
+        }, 250);
     }, []);
     useEffect(() => {
         if (account?.role === 'user') {
@@ -149,16 +140,22 @@ function ViewAllBooks() {
                     / <span>Xem tất cả</span>
                 </p>
             </div>
-            <div className="h-100">
-                <div className="ag-theme-alpine" style={{ height: 500 }}>
-                    <AgGridReact
-                        rowData={books}
-                        columnDefs={colDefs}
-                        defaultColDef={defaultColDef}
-                        dataTypeDefinitions={dataTypeDefinitions}
-                    ></AgGridReact>
+            {isLoading ? (
+                <div className="d-flex justify-content-center align-items-center bg-light" style={{ height: '500px' }}>
+                    <Spinner animation="border" variant="primary"></Spinner>
                 </div>
-            </div>
+            ) : (
+                <div className="h-100">
+                    <div className="ag-theme-alpine" style={{ height: 500 }}>
+                        <AgGridReact
+                            rowData={books}
+                            columnDefs={colDefs}
+                            defaultColDef={defaultColDef}
+                            dataTypeDefinitions={dataTypeDefinitions}
+                        ></AgGridReact>
+                    </div>
+                </div>
+            )}
             <Modal show={isModal} animation centered>
                 <Modal.Header className="d-flex justify-content-center">
                     <Modal.Title>Xóa sách mượn</Modal.Title>

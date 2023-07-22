@@ -262,7 +262,7 @@ function DashBoard() {
             text: null,
         },
         yAxis: {},
-        colors: ['#E13853', '#2CBE89', '#FA9124', '#2C78BE'],
+        colors: ['#2CBE89', '#E13853', '#2C78BE'],
         xAxis: {
             categories: history
                 ? history.map((item) => {
@@ -318,28 +318,17 @@ function DashBoard() {
                     symbol: 'circle',
                 },
             },
-            // {
-            //     name: 'Chưa hoàn thành',
-            //     data: history
-            //         ? history.map((ele) => {
-            //               return ele.notCompleted;
-            //           })
-            //         : [],
-            //     marker: {
-            //         symbol: 'circle',
-            //     },
-            // },
-            // {
-            //     name: 'Hủy bỏ',
-            //     data: history
-            //         ? history.map((ele) => {
-            //               return ele.canceled;
-            //           })
-            //         : [],
-            //     marker: {
-            //         symbol: 'circle',
-            //     },
-            // },
+            {
+                name: 'Trả',
+                data: history
+                    ? history.map((ele) => {
+                          return ele.returnedBooks;
+                      })
+                    : [],
+                marker: {
+                    symbol: 'circle',
+                },
+            },
         ],
 
         responsive: {
@@ -351,7 +340,7 @@ function DashBoard() {
                     chartOptions: {
                         xAxis: {
                             labels: {
-                                step: 1,
+                                step: 2,
                             },
                         },
                     },
@@ -435,7 +424,7 @@ function DashBoard() {
             case 0:
                 setTitle('Tất cả');
                 begin = 0;
-                end = dateTo(dateToHasTimePrev(Date.now(), -100));
+                end = dateTo(dateToHasTimePrev(Date.now()));
                 break;
             case 1:
                 setTitle('Hôm nay');
@@ -551,7 +540,7 @@ function DashBoard() {
                     <Col lg={8} className="mt-3">
                         <div className="mx-3 p-3 h-100 bg-white">
                             <div className="d-flex justify-content-between align-items-center">
-                                <p className="fs-5 fw-bold">Thống kê sách mượn và hết hạn theo ngày</p>
+                                <p className="fs-5 fw-bold">Thống kê sách mượn,trả và hết hạn theo ngày</p>
                                 <div className={styles.options}>
                                     <Dropdown>
                                         <Dropdown.Toggle as={'div'} className={styles.toggle}>

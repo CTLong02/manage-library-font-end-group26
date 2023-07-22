@@ -11,6 +11,13 @@ const bookHelper = {
                 return 'Tất cả';
         }
     },
+    DateGolalToVN: (s) => {
+        let newS = '';
+        newS = newS.concat(s.slice(8, 10));
+        newS = newS.concat(`-${s.slice(5, 7)}`);
+        newS = newS.concat(`-${s.slice(0, 4)}`);
+        return newS;
+    },
     countBookByDate: (begin, end, data) => {
         const set = new Set();
         const beginTime = new Date(begin);
@@ -26,15 +33,26 @@ const bookHelper = {
             return date.toJSON().slice(0, 10);
         };
 
+        const dateGolalToVN = (s) => {
+            let newS = '';
+            newS = newS.concat(s.slice(8, 10));
+            newS = newS.concat(`-${s.slice(5, 7)}`);
+            newS = newS.concat(`-${s.slice(0, 4)}`);
+            return newS;
+        };
+
         for (let i = 0; i < data.length; i++) {
             const dateBorrowedTime = dateVNToGlobal(data[i].dateBorrowed);
             const dateExpiredTime = dateVNToGlobal(data[i].dateExpired);
-            // console.log(sBegin, sEnd, dateBorrowedTime, dateExpiredTime);
+            // console.log(sBegin, sEnd, dateBorrowedTime, dateExpiredTime, data[i].dateReturned);
             if (dateBorrowedTime >= sBegin && dateBorrowedTime <= sEnd) {
                 set.add(data[i].dateBorrowed);
             }
             if (dateExpiredTime >= sBegin && dateExpiredTime <= sEnd) {
                 set.add(data[i].dateExpired);
+            }
+            if (Boolean(data[i].dateReturned) && data[i].dateReturned >= sBegin && data[i].dateReturned <= sEnd) {
+                set.add(dateGolalToVN(data[i].dateReturned));
             }
         }
         // console.log(set);
@@ -48,6 +66,9 @@ const bookHelper = {
                 }).length,
                 expiredBooks: data.filter((ele) => {
                     return ele.dateExpired == item;
+                }).length,
+                returnedBooks: data.filter((ele) => {
+                    return ele.dateReturned && dateGolalToVN(ele.dateReturned) == item;
                 }).length,
             };
             iOfArr++;
